@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stohp/src/pages/home.dart';
+import './values/styles.dart';
 
 void main() => runApp(StohpApp());
 
@@ -12,7 +13,9 @@ class StohpApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Stohp',
       theme: ThemeData(
+        fontFamily: 'OpenSans',
         primarySwatch: Colors.blue,
+        textTheme: TextTheme(button: button, title: title, subtitle: subtitle),
       ),
       home: HomePage(),
     );
