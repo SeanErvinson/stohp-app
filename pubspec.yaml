@@ -14,6 +14,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   scrollable_bottom_sheet: ^0.2.1
   qrscan: ^0.2.17
+  qr_flutter: ^3.2.0
 
 dev_dependencies:
   flutter_test:
