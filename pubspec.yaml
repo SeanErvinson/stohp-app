@@ -13,6 +13,7 @@ dependencies:
   google_maps_flutter: 0.5.21+15
   cupertino_icons: ^0.1.2
   scrollable_bottom_sheet: ^0.2.1
+  qrscan: ^0.2.17
 
 dev_dependencies:
   flutter_test:
