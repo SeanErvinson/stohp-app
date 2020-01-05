@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stohp/src/pages/home.dart';
+import 'package:stohp/src/screens/home.dart';
 import './values/styles.dart';
 
 void main() => runApp(StohpApp());
