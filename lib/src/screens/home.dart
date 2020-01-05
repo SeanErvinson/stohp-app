@@ -5,12 +5,12 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../values/values.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   String barcode = '';
   final TextEditingController destinationInputController =
       TextEditingController();
