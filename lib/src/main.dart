@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stohp/src/screens/home.dart';
+import 'package:stohp/src/screens/screens.dart';
 import './values/styles.dart';
 
 void main() => runApp(StohpApp());
@@ -17,7 +17,12 @@ class StohpApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: TextTheme(button: button, title: title, subtitle: subtitle),
       ),
-      home: HomePage(),
+      routes: {
+        "login": (context) => LoginScreen(),
+        "registration": (context) => RegistrationScreen(),
+        "setting": (context) => SettingScreen(),
+      },
+      home: HomeScreen(),
     );
   }
 }
