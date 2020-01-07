@@ -12,7 +12,6 @@ dependencies:
   vibration: ^1.2.2
   google_maps_flutter: 0.5.21+15
   cupertino_icons: ^0.1.2
-  scrollable_bottom_sheet: ^0.2.1
   qrscan: ^0.2.17
   qr_flutter: ^3.2.0
   autocomplete_textfield: ^1.7.3
