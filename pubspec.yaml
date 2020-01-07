@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  vibration: 1.2.2
+  vibration: ^1.2.2
   google_maps_flutter: 0.5.21+15
   cupertino_icons: ^0.1.2
   scrollable_bottom_sheet: ^0.2.1
