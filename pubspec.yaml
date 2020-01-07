@@ -16,6 +16,8 @@ dependencies:
   qrscan: ^0.2.17
   qr_flutter: ^3.2.0
   autocomplete_textfield: ^1.7.3
+  flutter_bloc: ^3.1.0
+  equatable: ^1.0.2
 
 dev_dependencies:
   flutter_test:
