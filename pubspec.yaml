@@ -20,6 +20,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
+  # adaptive_icon_background: "assets/icon/icon-background.png"
+  # adaptive_icon_foreground: "assets/icon/icon-foreground.png"
 
 flutter:
   uses-material-design: true
@@ -32,5 +40,5 @@ flutter:
         - asset: assets/fonts/OpenSans-Light.ttf
           weight: 300
   assets:
-    - assets/logo/
+    - assets/icons/
     - assets/images/
