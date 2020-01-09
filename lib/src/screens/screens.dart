@@ -1,4 +1,4 @@
-export 'login.dart';
-export 'registration.dart';
-export 'setting.dart';
-export 'home.dart';
+export 'login_screen.dart';
+export 'registration_screen.dart';
+export 'settings_screen.dart';
+export 'home_screen.dart';
