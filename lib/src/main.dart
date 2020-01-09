@@ -21,6 +21,8 @@ class StohpApp extends StatelessWidget {
         "login": (context) => LoginScreen(),
         "registration": (context) => RegistrationScreen(),
         "setting": (context) => SettingScreen(),
+        "navigation": (context) => NavigationScreen(),
+        "home": (context) => HomeScreen(),
       },
       home: HomeScreen(),
     );
