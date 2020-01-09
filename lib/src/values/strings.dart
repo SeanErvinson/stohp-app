@@ -6,4 +6,5 @@ class Strings {
   static const String distanceRemaining = "Distance left";
   static const String estimatedTimeOfArrival = "ETA";
   static const String cancel = "Cancel";
+  static const String location = "Enter location";
 }
