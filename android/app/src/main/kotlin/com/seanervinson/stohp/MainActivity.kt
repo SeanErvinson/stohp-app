@@ -1,4 +1,4 @@
-package com.example.stohp
+package com.seanervinson.stohp
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
