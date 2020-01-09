@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PlacesSearchResult selected;
   final TextEditingController _searchTextController = TextEditingController();
-  List<PlacesSearchResult> suggestions_places = [];
 
   Future<List<PlacesSearchResult>> searchPlace(String query) async {
     final places =
@@ -62,9 +61,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "Hello! Sean",
-                      style: Theme.of(context).textTheme.subtitle,
+                    RichText(
+                      text: TextSpan(
+                        text: "Hello ",
+                        style: Theme.of(context).textTheme.subtitle,
+                        children: [
+                          TextSpan(
+                            text: "Sean",
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
+                        ],
+                      ),
                     ),
                     Text(
                       Strings.destination,
