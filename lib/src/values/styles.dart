@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-TextStyle title = TextStyle(
+const TextStyle title = TextStyle(
   fontSize: 28.0,
   color: bluePrimary,
   fontWeight: FontWeight.bold,
 );
 
-TextStyle subtitle = TextStyle(
+const TextStyle subtitle = TextStyle(
   fontSize: 16.0,
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
 
-TextStyle button = TextStyle(
+const TextStyle button = TextStyle(
   fontSize: 24.0,
   fontWeight: FontWeight.bold,
   color: Colors.white,
+);
+
+const TextStyle subHead = TextStyle(
+  fontSize: 16.0,
+  fontWeight: FontWeight.w400,
+  color: Colors.black,
 );
