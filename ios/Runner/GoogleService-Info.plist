@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>173293331070-3k5jejnl8nipgggp76qen3uunjq6ubj1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.173293331070-3k5jejnl8nipgggp76qen3uunjq6ubj1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDzaKYeOjj4RLR6Sj43znElWZfveu1eFjQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>173293331070</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.seanervinson.stohp</string>
+	<key>PROJECT_ID</key>
+	<string>stohp-database</string>
+	<key>STORAGE_BUCKET</key>
+	<string>stohp-database.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:173293331070:ios:ae64d9b4acf93c7e87ee2f</string>
+	<key>DATABASE_URL</key>
+	<string>https://stohp-database.firebaseio.com</string>
+</dict>
+</plist>
