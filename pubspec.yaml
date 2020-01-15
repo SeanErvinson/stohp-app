@@ -20,7 +20,8 @@ dependencies:
   # Hardware
   vibration: ^1.2.2
   # Bloc
-  flutter_bloc: ^2.1.1
+  flutter_bloc: ^3.1.0
+  rxdart: ^0.23.1
   equatable: ^1.0.2
   # Location
   geolocator: ^5.1.5
