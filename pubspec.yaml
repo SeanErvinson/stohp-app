@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
+  meta: ^1.1.8
   # UI
   flutter_typeahead: ^1.7.0
   # Util
