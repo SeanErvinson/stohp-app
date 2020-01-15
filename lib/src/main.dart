@@ -15,7 +15,12 @@ class StohpApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'OpenSans',
         primarySwatch: Colors.blue,
-        textTheme: TextTheme(button: button, title: title, subtitle: subtitle),
+        textTheme: TextTheme(
+          button: button,
+          title: title,
+          subtitle: subtitle,
+          subhead: subHead,
+        ),
       ),
       routes: {
         "login": (context) => LoginScreen(),
