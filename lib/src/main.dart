@@ -6,7 +6,7 @@ import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/screens/screens.dart';
 import 'package:bloc/bloc.dart';
-import './values/styles.dart';
+import 'package:stohp/src/values/values.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +48,9 @@ class StohpApp extends StatelessWidget {
           ),
         ),
         routes: {
+          "welcome": (context) => WelcomeScreen(
+                userRepository: _userRepository,
+              ),
           "login": (context) => LoginScreen(
                 userRepository: _userRepository,
               ),
@@ -65,7 +68,7 @@ class StohpApp extends StatelessWidget {
             return SplashScreen();
           }
           if (state is Unauthenticated) {
-            return LoginScreen(userRepository: _userRepository);
+            return WelcomeScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
             return HomeScreen(name: state.displayName);
