@@ -25,3 +25,14 @@ const TextStyle subHead = TextStyle(
   fontWeight: FontWeight.w400,
   color: Colors.black,
 );
+
+const TextStyle navigationTitle = TextStyle(
+  fontSize: 10.0,
+  color: Colors.white,
+);
+
+const TextStyle navigationDarkTitle = TextStyle(
+  fontSize: 10.0,
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+);
