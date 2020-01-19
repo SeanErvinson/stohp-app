@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stohp/src/bloc/DefaultBlocDelegate.dart';
-import 'package:stohp/src/bloc/authentication_bloc/bloc.dart';
+import 'package:stohp/src/components/common/DefaultBlocDelegate.dart';
+import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/screens/screens.dart';
 import 'package:bloc/bloc.dart';
@@ -48,8 +48,12 @@ class StohpApp extends StatelessWidget {
           ),
         ),
         routes: {
-          "login": (context) => LoginScreen(),
-          "registration": (context) => RegistrationScreen(),
+          "login": (context) => LoginScreen(
+                userRepository: _userRepository,
+              ),
+          "registration": (context) => RegistrationScreen(
+                userRepository: _userRepository,
+              ),
           "setting": (context) => SettingScreen(),
           "navigation": (context) => NavigationScreen(),
           "home": (context) => HomeScreen(),
@@ -59,14 +63,13 @@ class StohpApp extends StatelessWidget {
             builder: (context, state) {
           if (state is Uninitialized) {
             return SplashScreen();
-          } else if (state is Authenticated) {
-            return HomeScreen(
-              // Change to user model
-              name: state.displayName,
-            );
           }
-
-          return Container();
+          if (state is Unauthenticated) {
+            return LoginScreen(userRepository: _userRepository);
+          }
+          if (state is Authenticated) {
+            return HomeScreen(name: state.displayName);
+          }
         }));
   }
 }
