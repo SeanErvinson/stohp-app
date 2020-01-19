@@ -41,9 +41,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/icon.png"
-  # adaptive_icon_background: "assets/icon/icon-background.png"
-  # adaptive_icon_foreground: "assets/icon/icon-foreground.png"
+  image_path: "assets/icons/logo-badge.png"
+  adaptive_icon_background: "assets/icons/logo-badge-background.png"
+  adaptive_icon_foreground: "assets/icons/logo-badge-foreground.png"
 
 flutter:
   uses-material-design: true
