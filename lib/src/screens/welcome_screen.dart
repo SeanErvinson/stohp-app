@@ -5,10 +5,10 @@ import 'package:stohp/src/components/login/login_google_button.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/values/values.dart';
 
-class LoginScreen extends StatelessWidget {
+class WelcomeScreen extends StatelessWidget {
   final UserRepository _userRepository;
 
-  LoginScreen({Key key, @required UserRepository userRepository})
+  WelcomeScreen({Key key, @required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository,
         super(key: key);
@@ -103,7 +103,7 @@ class LoginButton extends StatelessWidget {
         ),
         color: Color.fromRGBO(194, 194, 194, .45),
         onPressed: () {
-          Navigator.pushNamed(context, "credential");
+          Navigator.pushNamed(context, "login");
         },
         child: Text(
           'Log In',
