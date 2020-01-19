@@ -2,9 +2,12 @@ class Strings {
   static const String destination = "Destination";
   static const String start = "Start";
   static const String activityHeader = "Latest Activity";
-  static const String stohp = "Stohp";
+  static const String appName = "Stohp";
   static const String distanceRemaining = "Distance left";
   static const String estimatedTimeOfArrival = "ETA";
   static const String cancel = "Cancel";
   static const String location = "Enter location";
+  static const String login = "Log In";
+  static const String signup = "Sign Up";
+  static const String googleLogin = "Log In with Google";
 }
