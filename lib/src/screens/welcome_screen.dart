@@ -80,7 +80,7 @@ class SignUpButton extends StatelessWidget {
         ),
         color: Color.fromRGBO(194, 194, 194, .45),
         child: Text(
-          "Sign Up",
+          Strings.signup,
           textAlign: TextAlign.center,
           style: navigationTitle,
         ),
@@ -106,7 +106,7 @@ class LoginButton extends StatelessWidget {
           Navigator.pushNamed(context, "login");
         },
         child: Text(
-          'Log In',
+          Strings.login,
           style: navigationTitle,
         ),
       ),

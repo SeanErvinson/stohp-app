@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.black54,
                     ),
                     Text(
-                      'Log In',
+                      Strings.login,
                       style: navigationDarkTitle,
                     ),
                   ],
