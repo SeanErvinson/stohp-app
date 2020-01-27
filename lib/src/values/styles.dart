@@ -9,7 +9,7 @@ const TextStyle title = TextStyle(
 );
 
 const TextStyle subtitle = TextStyle(
-  fontSize: 16.0,
+  fontSize: 14.0,
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
@@ -35,4 +35,15 @@ const TextStyle navigationDarkTitle = TextStyle(
   fontSize: 10.0,
   color: Colors.black,
   fontWeight: FontWeight.bold,
+);
+
+const TextStyle activityInfo = TextStyle(
+  fontSize: 12.0,
+  color: Colors.black87,
+);
+
+const TextStyle cardHeader = TextStyle(
+  color: darkBlue,
+  fontWeight: FontWeight.bold,
+  fontSize: 14.0,
 );
