@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
 import 'package:stohp/src/components/login/bloc/bloc.dart';
 import 'package:stohp/src/components/login/login_google_button.dart';
 import 'package:stohp/src/repository/user_repository.dart';
@@ -17,51 +18,61 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _usableScreenHeight = MediaQuery.of(context).size.height;
     final _usableScreenWidth = MediaQuery.of(context).size.width;
-    final _logoSize = 128.0;
-    return SafeArea(
-      child: Scaffold(
-        body: BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(userRepository: _userRepository),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/background.jpg"),
-                    fit: BoxFit.cover,
+    final _logoSize = 140.0;
+    final _loginBloc = LoginBloc(userRepository: _userRepository);
+
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.isSuccess) {
+          BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
+        }
+      },
+      bloc: _loginBloc,
+      child: SafeArea(
+        child: Scaffold(
+          body: BlocProvider<LoginBloc>(
+            create: (context) => _loginBloc,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/background.jpg"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                  child: Image.asset(
-                    "assets/icons/logo-banner-foreground.png",
-                    width: _logoSize,
-                  ),
-                  top: _usableScreenHeight * .1,
-                  left: (_usableScreenWidth * .5) - (_logoSize * .5)),
-              Positioned(
-                width: _usableScreenWidth,
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      GoogleLoginButton(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Flexible(flex: 1, child: LoginButton()),
-                          SizedBox(
-                            width: 32.0,
-                          ),
-                          Flexible(flex: 1, child: SignUpButton()),
-                        ],
-                      ),
-                    ],
+                Positioned(
+                    child: Image.asset(
+                      "assets/icons/logo-banner-foreground.png",
+                      width: _logoSize,
+                    ),
+                    top: _usableScreenHeight * .1,
+                    left: (_usableScreenWidth * .5) - (_logoSize * .5)),
+                Positioned(
+                  width: _usableScreenWidth,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        GoogleLoginButton(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Flexible(flex: 1, child: LoginButton()),
+                            SizedBox(
+                              width: 32.0,
+                            ),
+                            Flexible(flex: 1, child: SignUpButton()),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
