@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
 import 'package:stohp/src/components/register/bloc/bloc.dart';
-import 'package:stohp/src/components/register/register_button.dart';
+import 'package:stohp/src/values/values.dart';
 
 class RegisterForm extends StatefulWidget {
   State<RegisterForm> createState() => _RegisterFormState();
@@ -72,15 +72,14 @@ class _RegisterFormState extends State<RegisterForm> {
       child: BlocBuilder<RegisterBloc, RegisterState>(
         builder: (context, state) {
           return Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Form(
-              child: ListView(
+              child: Column(
                 children: <Widget>[
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.email),
-                      labelText: 'Email',
+                      hintText: Strings.emailHint,
                     ),
                     keyboardType: TextInputType.emailAddress,
                     autocorrect: false,
@@ -92,8 +91,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
-                      labelText: 'Password',
+                      hintText: Strings.passwordHint,
                     ),
                     obscureText: true,
                     autocorrect: false,
@@ -102,10 +100,13 @@ class _RegisterFormState extends State<RegisterForm> {
                       return !state.isPasswordValid ? 'Invalid Password' : null;
                     },
                   ),
-                  RegisterButton(
-                    onPressed: isRegisterButtonEnabled(state)
-                        ? _onFormSubmitted
-                        : null,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: RegisterButton(
+                      onPressed: isRegisterButtonEnabled(state)
+                          ? _onFormSubmitted
+                          : null,
+                    ),
                   ),
                 ],
               ),
@@ -140,6 +141,33 @@ class _RegisterFormState extends State<RegisterForm> {
       OnSubmitted(
         email: _emailController.text,
         password: _passwordController.text,
+      ),
+    );
+  }
+}
+
+class RegisterButton extends StatelessWidget {
+  final VoidCallback _onPressed;
+
+  RegisterButton({Key key, VoidCallback onPressed})
+      : _onPressed = onPressed,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: FlatButton(
+        disabledColor: Colors.grey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        color: logoSecondary,
+        onPressed: _onPressed,
+        child: Text(
+          Strings.signup,
+          style: navigationTitle,
+        ),
       ),
     );
   }
