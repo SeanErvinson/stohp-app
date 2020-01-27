@@ -13,4 +13,6 @@ class Strings {
   static const String emailHint = "Email address";
   static const String passwordHint = "Password";
   static const String register = "Register";
+  static const String newsStoriesHeader = "News & Stories";
+  static const String servicesHeader = "Services";
 }
