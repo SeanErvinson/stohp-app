@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
 import 'package:stohp/src/components/login/bloc/bloc.dart';
-import 'package:stohp/src/components/login/login_button.dart';
-import 'package:stohp/src/components/login/login_create_button.dart';
-import 'package:stohp/src/components/login/login_google_button.dart';
+import 'package:stohp/src/values/values.dart';
 
 class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();
@@ -65,20 +63,20 @@ class _LoginFormState extends State<LoginForm> {
         }
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
+          Navigator.of(context).pop();
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Form(
-              child: ListView(
+              child: Column(
                 children: <Widget>[
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.email),
-                      labelText: 'Email',
+                      hintText: Strings.emailHint,
                     ),
                     keyboardType: TextInputType.emailAddress,
                     autovalidate: true,
@@ -90,8 +88,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
-                      labelText: 'Password',
+                      hintText: Strings.passwordHint,
                     ),
                     obscureText: true,
                     autovalidate: true,
@@ -102,17 +99,9 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        LoginButton(
-                          onPressed: isLoginButtonEnabled(state)
-                              ? _onFormSubmitted
-                              : null,
-                        ),
-                        GoogleLoginButton(),
-                        CreateAccountButton(),
-                      ],
+                    child: LogInButton(
+                      onPressed:
+                          isLoginButtonEnabled(state) ? _onFormSubmitted : null,
                     ),
                   ),
                 ],
@@ -148,6 +137,33 @@ class _LoginFormState extends State<LoginForm> {
       LoginWithCredentialsPressed(
         email: _emailController.text,
         password: _passwordController.text,
+      ),
+    );
+  }
+}
+
+class LogInButton extends StatelessWidget {
+  final VoidCallback _onPressed;
+
+  LogInButton({Key key, VoidCallback onPressed})
+      : _onPressed = onPressed,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: FlatButton(
+        disabledColor: Colors.grey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        color: logoSecondary,
+        onPressed: _onPressed,
+        child: Text(
+          Strings.login,
+          style: navigationTitle,
+        ),
       ),
     );
   }
