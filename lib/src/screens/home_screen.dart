@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.person),
+                  onPressed: () {},
                 )
               ],
             ),
@@ -61,56 +62,67 @@ class ServicesCard extends StatelessWidget {
         color: Colors.white,
         elevation: 1,
         semanticContainer: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CardHeader(
-              title: Strings.servicesHeader,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    CircleAvatar(
-                      child: IconButton(
-                        icon: Icon(Icons.alarm),
-                        iconSize: 24.0,
-                        onPressed: () {},
-                      ),
-                    ),
-                    Text("Wake")
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    CircleAvatar(
-                      child: IconButton(
-                        icon: Icon(Icons.stop),
-                        iconSize: 24.0,
-                        onPressed: () {},
-                      ),
-                    ),
-                    Text("Para")
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    CircleAvatar(
-                      child: IconButton(
-                        icon: Icon(Icons.map),
-                        iconSize: 24.0,
-                        onPressed: () {},
-                      ),
-                    ),
-                    Text("View")
-                  ],
-                ),
-              ],
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CardHeader(
+                title: Strings.servicesHeader,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ServiceButton(
+                    title: Strings.wakeService,
+                    icon: Icons.alarm,
+                    onPressed: () {},
+                  ),
+                  ServiceButton(
+                    title: Strings.stopService,
+                    icon: Icons.pause,
+                    onPressed: () {},
+                  ),
+                  ServiceButton(
+                    title: Strings.mapService,
+                    icon: Icons.map,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class ServiceButton extends StatelessWidget {
+  final String _title;
+  final VoidCallback _onPressed;
+  final IconData _icon;
+
+  const ServiceButton(
+      {Key key, String title, VoidCallback onPressed, IconData icon})
+      : this._title = title,
+        this._onPressed = onPressed,
+        this._icon = icon,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        CircleAvatar(
+          child: IconButton(
+            icon: Icon(_icon),
+            iconSize: 24.0,
+            onPressed: _onPressed,
+          ),
+        ),
+        Text(_title)
+      ],
     );
   }
 }
@@ -128,60 +140,61 @@ class NewsStoriesCard extends StatelessWidget {
     return Container(
       height: _usableScreenHeight * .3,
       color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          CardHeader(
-            title: Strings.newsStoriesHeader,
-          ),
-          Expanded(
-            child: FutureBuilder<List<Article>>(
-              future: _newsStoriesRepository.fetchArticles(),
-              initialData: [],
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Article>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.none &&
-                    snapshot.data == null) {
-                  return Container();
-                }
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data != null ? snapshot.data.length : 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    Article currentArticle = snapshot.data[index];
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                      width: 148.0,
-                      child: Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        color: bgSecondary,
-                        child: Column(
-                          children: <Widget>[
-                            AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: Image.network(currentArticle.image),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(6.0),
-                              child: Text(
-                                currentArticle.title,
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardHeader(
+              title: Strings.newsStoriesHeader,
             ),
-          )
-        ],
+            Expanded(
+              child: FutureBuilder<List<Article>>(
+                future: _newsStoriesRepository.fetchArticles(),
+                initialData: [],
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Article>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.none &&
+                      snapshot.data == null) {
+                    return Container();
+                  }
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data != null ? snapshot.data.length : 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      Article currentArticle = snapshot.data[index];
+                      return Container(
+                        width: 148.0,
+                        child: Card(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          color: bgSecondary,
+                          child: Column(
+                            children: <Widget>[
+                              AspectRatio(
+                                aspectRatio: 16 / 9,
+                                child: FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: Image.network(currentArticle.image),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(6.0),
+                                child: Text(
+                                  currentArticle.title,
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -200,38 +213,43 @@ class ActivitiesCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CardHeader(
-              title: Strings.activityHeader,
-            ),
-            Expanded(
-              child: FutureBuilder<List<Activity>>(
-                future: _activityRepository.fetchActivities(),
-                initialData: [],
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<Activity>> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount:
-                          snapshot.data != null ? snapshot.data.length : 0,
-                      itemBuilder: (context, index) {
-                        Activity currentActivity = snapshot.data[index];
-                        return ActivityTile(
-                            date: formatDate(
-                                currentActivity.createdOn, [d, '/', mm]),
-                            time: formatDate(
-                                currentActivity.createdOn, [h, ":", nn, am]),
-                            title: currentActivity.title);
-                      },
-                    );
-                  }
-                  return Container();
-                },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CardHeader(
+                title: Strings.activityHeader,
               ),
-            ),
-          ],
+              Expanded(
+                child: FutureBuilder<List<Activity>>(
+                  future: _activityRepository.fetchActivities(),
+                  initialData: [],
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Activity>> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(height: 1),
+                        itemCount:
+                            snapshot.data != null ? snapshot.data.length : 0,
+                        itemBuilder: (context, index) {
+                          Activity currentActivity = snapshot.data[index];
+                          return ActivityTile(
+                              date: formatDate(
+                                  currentActivity.createdOn, [d, '/', mm]),
+                              time: formatDate(
+                                  currentActivity.createdOn, [h, ":", nn, am]),
+                              title: currentActivity.title);
+                        },
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -247,21 +265,10 @@ class CardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Text(
-        _title,
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 14.0,
-        ),
-      ),
+      padding: const EdgeInsets.only(bottom: 8, left: 8),
+      child: Text(_title, style: cardHeader),
     );
   }
-}
-
-Future _scan() async {
-  String barcode = await scanner.scan();
 }
 
 class GreetingHeader extends StatelessWidget {
@@ -348,12 +355,19 @@ class ActivityTile extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.subtitle,
+            overflow: TextOverflow.ellipsis,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(date),
-              Text(time),
+              Text(
+                time,
+                style: activityInfo,
+              ),
+              Text(
+                date,
+                style: activityInfo,
+              ),
             ],
           ),
         ],
