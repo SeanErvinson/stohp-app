@@ -7,17 +7,15 @@ class SplashScreen extends StatelessWidget {
     final double _usableScreenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: <Widget>[
             Flexible(
               flex: 1,
-              child: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Image.asset(
-                    "assets/icons/logo-banner.png",
-                    width: 180.0,
-                  ),
+              child: Center(
+                child: Image.asset(
+                  "assets/icons/logo-banner-foreground.png",
+                  width: 180.0,
                 ),
               ),
             ),
