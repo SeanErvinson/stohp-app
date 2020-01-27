@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:stohp/src/models/activity.dart';
+import 'package:stohp/src/models/article.dart';
+import 'package:stohp/src/repository/activity_repository.dart';
+import 'package:stohp/src/repository/news_stories_repository.dart';
 
 import '../values/values.dart';
 
@@ -51,37 +56,60 @@ class ServicesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 1,
-      semanticContainer: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          CardHeader(
-            title: Strings.servicesHeader,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              CircleAvatar(
-                child: IconButton(
-                  icon: Icon(Icons.alarm),
-                  iconSize: 24.0,
-                  onPressed: () {},
+    return Container(
+      child: Card(
+        color: Colors.white,
+        elevation: 1,
+        semanticContainer: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardHeader(
+              title: Strings.servicesHeader,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    CircleAvatar(
+                      child: IconButton(
+                        icon: Icon(Icons.alarm),
+                        iconSize: 24.0,
+                        onPressed: () {},
+                      ),
+                    ),
+                    Text("Wake")
+                  ],
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.stop),
-                iconSize: 24.0,
-              ),
-              IconButton(
-                icon: Icon(Icons.map),
-                iconSize: 24.0,
-              ),
-            ],
-          ),
-        ],
+                Column(
+                  children: <Widget>[
+                    CircleAvatar(
+                      child: IconButton(
+                        icon: Icon(Icons.stop),
+                        iconSize: 24.0,
+                        onPressed: () {},
+                      ),
+                    ),
+                    Text("Para")
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    CircleAvatar(
+                      child: IconButton(
+                        icon: Icon(Icons.map),
+                        iconSize: 24.0,
+                        onPressed: () {},
+                      ),
+                    ),
+                    Text("View")
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -94,31 +122,66 @@ class NewsStoriesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
-      child: Card(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CardHeader(
-              title: Strings.newsStoriesHeader,
+    final _usableScreenHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    NewsStoriesRepository _newsStoriesRepository = new NewsStoriesRepository();
+    return Container(
+      height: _usableScreenHeight * .3,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CardHeader(
+            title: Strings.newsStoriesHeader,
+          ),
+          Expanded(
+            child: FutureBuilder<List<Article>>(
+              future: _newsStoriesRepository.fetchArticles(),
+              initialData: [],
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Article>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.none &&
+                    snapshot.data == null) {
+                  return Container();
+                }
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data != null ? snapshot.data.length : 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    Article currentArticle = snapshot.data[index];
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                      width: 148.0,
+                      child: Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: bgSecondary,
+                        child: Column(
+                          children: <Widget>[
+                            AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: Image.network(currentArticle.image),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(6.0),
+                              child: Text(
+                                currentArticle.title,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 20,
-                    width: 100,
-                    child: Text(index.toString()),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -131,9 +194,11 @@ class ActivitiesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ActivityRepository _activityRepository = new ActivityRepository();
     return Flexible(
       flex: 1,
-      child: Card(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,11 +207,28 @@ class ActivitiesCard extends StatelessWidget {
               title: Strings.activityHeader,
             ),
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Text(index.toString());
+              child: FutureBuilder<List<Activity>>(
+                future: _activityRepository.fetchActivities(),
+                initialData: [],
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Activity>> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount:
+                          snapshot.data != null ? snapshot.data.length : 0,
+                      itemBuilder: (context, index) {
+                        Activity currentActivity = snapshot.data[index];
+                        return ActivityTile(
+                            date: formatDate(
+                                currentActivity.createdOn, [d, '/', mm]),
+                            time: formatDate(
+                                currentActivity.createdOn, [h, ":", nn, am]),
+                            title: currentActivity.title);
+                      },
+                    );
+                  }
+                  return Container();
                 },
-                itemCount: 5,
               ),
             ),
           ],
@@ -164,11 +246,15 @@ class CardHeader extends StatelessWidget {
         super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Text(
-      _title,
-      style: TextStyle(
-        color: logoPrimary,
-        fontSize: 16.0,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Text(
+        _title,
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 14.0,
+        ),
       ),
     );
   }
@@ -245,22 +331,22 @@ class LocationAutoCompleteTextField extends StatelessWidget {
 }
 
 class ActivityTile extends StatelessWidget {
-  final String place;
+  final String title;
   final String date;
   final String time;
 
-  const ActivityTile({this.place, this.date, this.time});
+  const ActivityTile({this.title, this.date, this.time});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-      color: bgSecondary,
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            place,
+            title,
             style: Theme.of(context).textTheme.subtitle,
           ),
           Column(
