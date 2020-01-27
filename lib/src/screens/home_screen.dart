@@ -8,103 +8,167 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import '../values/values.dart';
 
 class HomeScreen extends StatelessWidget {
-  // Will be replaced with the user model
   final String name;
-
   const HomeScreen({Key key, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final _usableScreenHeight =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-    var initial = 0.0;
-    var distance = 0.0;
-
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              expandedHeight: _usableScreenHeight * .45,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    GreetingHeader(),
-                    Text(
-                      Strings.destination,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    LocationAutoCompleteTextField(),
-                    FlatButton(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 80.0, vertical: 12.0),
-                      textColor: Colors.white,
-                      child: Text(
-                        Strings.start,
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                      color: Color.fromRGBO(0, 177, 79, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, "navigation");
-                      },
-                    )
-                  ],
+        backgroundColor: bgSecondary,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    child: GreetingHeader(),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.person),
+                )
+              ],
+            ),
+            ServicesCard(),
+            ActivitiesCard(),
+            NewsStoriesCard(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ServicesCard extends StatelessWidget {
+  const ServicesCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      elevation: 1,
+      semanticContainer: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CardHeader(
+            title: Strings.servicesHeader,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              CircleAvatar(
+                child: IconButton(
+                  icon: Icon(Icons.alarm),
+                  iconSize: 24.0,
+                  onPressed: () {},
                 ),
               ),
-            ),
-            // TODO: Animation when first sliver is 0
-            // Add floating or change icon
-            // Change border to zero
-            SliverAppBar(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32),
-                topRight: Radius.circular(32),
-              )),
-              primary: true,
-              leading: Icon(
-                Icons.directions_run,
-                color: Colors.black,
+              IconButton(
+                icon: Icon(Icons.stop),
+                iconSize: 24.0,
               ),
-              elevation: 0.0,
-              pinned: true,
-              backgroundColor: bgSecondary,
-              title: Text(
-                Strings.activityHeader,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
+              IconButton(
+                icon: Icon(Icons.map),
+                iconSize: 24.0,
               ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NewsStoriesCard extends StatelessWidget {
+  const NewsStoriesCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 2,
+      child: Card(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardHeader(
+              title: Strings.newsStoriesHeader,
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  if (index.isOdd)
-                    return Container(
-                      child: Divider(),
-                      color: bgSecondary,
-                    );
-                  final i = index ~/ 2;
-                  return ActivityTile(
-                    place: i.toString(),
-                    time: "10:00pm,",
-                    date: "01/02/03",
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 20,
+                    width: 100,
+                    child: Text(index.toString()),
                   );
                 },
-                childCount: 25 * 2,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ActivitiesCard extends StatelessWidget {
+  const ActivitiesCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Card(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardHeader(
+              title: Strings.activityHeader,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Text(index.toString());
+                },
+                itemCount: 5,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CardHeader extends StatelessWidget {
+  final String _title;
+
+  const CardHeader({Key key, String title})
+      : this._title = title,
+        super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      _title,
+      style: TextStyle(
+        color: logoPrimary,
+        fontSize: 16.0,
       ),
     );
   }
@@ -118,6 +182,7 @@ class GreetingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textAlign: TextAlign.center,
       text: TextSpan(
         text: "Hello ",
         style: Theme.of(context).textTheme.subtitle,
