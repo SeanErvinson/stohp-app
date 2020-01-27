@@ -17,8 +17,6 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _usableScreenHeight =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     return SafeArea(
       child: Scaffold(
         backgroundColor: bgSecondary,
@@ -86,7 +84,7 @@ class ServicesCard extends StatelessWidget {
                   ServiceButton(
                     title: Strings.mapService,
                     icon: Icons.map,
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, "navigation"),
                   ),
                 ],
               ),
@@ -154,42 +152,47 @@ class NewsStoriesCard extends StatelessWidget {
                 initialData: [],
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Article>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.none &&
-                      snapshot.data == null) {
-                    return Container();
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data != null ? snapshot.data.length : 0,
-                    itemBuilder: (BuildContext context, int index) {
-                      Article currentArticle = snapshot.data[index];
-                      return Container(
-                        width: 148.0,
-                        child: Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: bgSecondary,
-                          child: Column(
-                            children: <Widget>[
-                              AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: Image.network(currentArticle.image),
-                                ),
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError) return Container();
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount:
+                            snapshot.data != null ? snapshot.data.length : 0,
+                        itemBuilder: (BuildContext context, int index) {
+                          Article currentArticle = snapshot.data[index];
+                          return Container(
+                            width: 148.0,
+                            child: Card(
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              color: bgSecondary,
+                              child: Column(
+                                children: <Widget>[
+                                  AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: FittedBox(
+                                      fit: BoxFit.cover,
+                                      child:
+                                          Image.network(currentArticle.image),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(6.0),
+                                    child: Text(
+                                      currentArticle.title,
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(6.0),
-                                child: Text(
-                                  currentArticle.title,
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
+                  }
                 },
               ),
             )
@@ -227,24 +230,28 @@ class ActivitiesCard extends StatelessWidget {
                   initialData: [],
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Activity>> snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(height: 1),
-                        itemCount:
-                            snapshot.data != null ? snapshot.data.length : 0,
-                        itemBuilder: (context, index) {
-                          Activity currentActivity = snapshot.data[index];
-                          return ActivityTile(
-                              date: formatDate(
-                                  currentActivity.createdOn, [d, '/', mm]),
-                              time: formatDate(
-                                  currentActivity.createdOn, [h, ":", nn, am]),
-                              title: currentActivity.title);
-                        },
-                      );
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        if (snapshot.hasError) return Container();
+                        return ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) =>
+                              Divider(height: 1),
+                          itemCount:
+                              snapshot.data != null ? snapshot.data.length : 0,
+                          itemBuilder: (context, index) {
+                            Activity currentActivity = snapshot.data[index];
+                            return ActivityTile(
+                                date: formatDate(
+                                    currentActivity.createdOn, [d, '/', mm]),
+                                time: formatDate(currentActivity.createdOn,
+                                    [h, ":", nn, am]),
+                                title: currentActivity.title);
+                          },
+                        );
                     }
-                    return Container();
                   },
                 ),
               ),
