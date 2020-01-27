@@ -15,4 +15,7 @@ class Strings {
   static const String register = "Register";
   static const String newsStoriesHeader = "News & Stories";
   static const String servicesHeader = "Services";
+  static const String wakeService = "Wake";
+  static const String stopService = "Stop";
+  static const String mapService = "View";
 }
