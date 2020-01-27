@@ -20,102 +20,90 @@ class HomeScreen extends StatelessWidget {
     var distance = 0.0;
 
     return SafeArea(
-      child: GestureDetector(
-        onPanStart: (DragStartDetails details) {
-          initial = details.globalPosition.dx;
-        },
-        onPanUpdate: (DragUpdateDetails details) {
-          distance = details.globalPosition.dx - initial;
-        },
-        onPanEnd: (DragEndDetails details) {
-          initial = 0.0;
-          if (distance < -100) _scan();
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.white,
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                expandedHeight: _usableScreenHeight * .45,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      GreetingHeader(),
-                      Text(
-                        Strings.destination,
-                        style: Theme.of(context).textTheme.title,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              expandedHeight: _usableScreenHeight * .45,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GreetingHeader(),
+                    Text(
+                      Strings.destination,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    LocationAutoCompleteTextField(),
+                    FlatButton(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 80.0, vertical: 12.0),
+                      textColor: Colors.white,
+                      child: Text(
+                        Strings.start,
+                        style: Theme.of(context).textTheme.button,
                       ),
-                      LocationAutoCompleteTextField(),
-                      FlatButton(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 80.0, vertical: 12.0),
-                        textColor: Colors.white,
-                        child: Text(
-                          Strings.start,
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        color: Color.fromRGBO(0, 177, 79, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, "navigation");
-                        },
-                      )
-                    ],
-                  ),
+                      color: Color.fromRGBO(0, 177, 79, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "navigation");
+                      },
+                    )
+                  ],
                 ),
               ),
-              // TODO: Animation when first sliver is 0
-              // Add floating or change icon
-              // Change border to zero
-              SliverAppBar(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
-                )),
-                primary: true,
-                leading: Icon(
-                  Icons.directions_run,
+            ),
+            // TODO: Animation when first sliver is 0
+            // Add floating or change icon
+            // Change border to zero
+            SliverAppBar(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32),
+                topRight: Radius.circular(32),
+              )),
+              primary: true,
+              leading: Icon(
+                Icons.directions_run,
+                color: Colors.black,
+              ),
+              elevation: 0.0,
+              pinned: true,
+              backgroundColor: bgSecondary,
+              title: Text(
+                Strings.activityHeader,
+                style: TextStyle(
                   color: Colors.black,
-                ),
-                elevation: 0.0,
-                pinned: true,
-                backgroundColor: bgSecondary,
-                title: Text(
-                  Strings.activityHeader,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    if (index.isOdd)
-                      return Container(
-                        child: Divider(),
-                        color: bgSecondary,
-                      );
-                    final i = index ~/ 2;
-                    return ActivityTile(
-                      place: i.toString(),
-                      time: "10:00pm,",
-                      date: "01/02/03",
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index.isOdd)
+                    return Container(
+                      child: Divider(),
+                      color: bgSecondary,
                     );
-                  },
-                  childCount: 25 * 2,
-                ),
+                  final i = index ~/ 2;
+                  return ActivityTile(
+                    place: i.toString(),
+                    time: "10:00pm,",
+                    date: "01/02/03",
+                  );
+                },
+                childCount: 25 * 2,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
