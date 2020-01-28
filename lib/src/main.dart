@@ -58,14 +58,13 @@ class StohpApp extends StatelessWidget {
                 userRepository: _userRepository,
               ),
           "setting": (context) => SettingScreen(),
-          "navigation": (context) => NavigationScreen(),
           "home": (context) => HomeScreen(),
           "splash": (context) => SplashScreen(),
         },
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
           if (state is Uninitialized) {
-            return SplashScreen();
+            return HomeScreen();
           }
           if (state is Unauthenticated) {
             return WelcomeScreen(userRepository: _userRepository);
