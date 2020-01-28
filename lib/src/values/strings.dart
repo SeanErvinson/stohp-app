@@ -18,4 +18,5 @@ class Strings {
   static const String wakeService = "Wake";
   static const String stopService = "Stop";
   static const String mapService = "View";
+  static const String close = "Close";
 }
