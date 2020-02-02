@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stohp/src/components/home/activities/activities_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/home/news_stories/news_stories_section.dart';
+import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/components/home/services/bloc/stop_bloc.dart';
 import 'package:stohp/src/components/home/services/services_section.dart';
 import 'package:stohp/src/components/home/services/wake/travel_status_bar.dart';
 import 'package:stohp/src/values/values.dart';
@@ -10,37 +12,43 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: bgSecondary,
-        body: Stack(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocProvider<LocationTrackBloc>(
+      create: (context) => LocationTrackBloc(),
+      child: BlocProvider<StopBloc>(
+        create: (context) => StopBloc(),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: bgSecondary,
+            body: Stack(
               children: <Widget>[
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Flexible(
-                      flex: 1,
-                      child: GreetingHeader(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          child: GreetingHeader(),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.person),
+                          onPressed: () {},
+                        )
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.person),
-                      onPressed: () {},
-                    )
+                    ServicesSection(),
+                    // ActivitiesSection(),
+                    NewsStoriesSection(),
                   ],
                 ),
-                ServicesSection(),
-                ActivitiesSection(),
-                NewsStoriesSection(),
+                Positioned(
+                  bottom: 0,
+                  child: TravelStatusBar(),
+                ),
               ],
             ),
-            Positioned(
-              bottom: 0,
-              child: TravelStatusBar(),
-            ),
-          ],
+          ),
         ),
       ),
     );
