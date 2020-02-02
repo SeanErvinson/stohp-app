@@ -60,6 +60,7 @@ class StohpApp extends StatelessWidget {
           "setting": (context) => SettingScreen(),
           "home": (context) => HomeScreen(),
           "splash": (context) => SplashScreen(),
+          "location-destination": (context) => LocationDestinationScreen(),
         },
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
