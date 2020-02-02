@@ -8,6 +8,9 @@ import 'package:stohp/src/screens/screens.dart';
 import 'package:bloc/bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
+import 'components/home/services/bloc/location_track_bloc.dart';
+import 'components/home/services/bloc/stop_bloc.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = DefaultBlocDelegate();
@@ -16,8 +19,14 @@ void main() {
     BlocProvider(
       create: (context) =>
           AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
-      child: StohpApp(
-        userRepository: userRepository,
+      child: BlocProvider<LocationTrackBloc>(
+        create: (context) => LocationTrackBloc(),
+        child: BlocProvider<StopBloc>(
+          create: (context) => StopBloc(),
+          child: StohpApp(
+            userRepository: userRepository,
+          ),
+        ),
       ),
     ),
   );
