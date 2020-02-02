@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
-import 'package:stohp/src/components/home/services/wake/location_wake.dart';
 import 'package:stohp/src/repository/places_repository.dart';
 import 'bloc/place_bloc.dart';
 
@@ -93,5 +92,35 @@ class _LocationFormState extends State<LocationForm> {
     super.dispose();
     _textEditingController.dispose();
     _bloc.close();
+  }
+}
+
+class SuggestionTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
+  const SuggestionTile({this.title, this.subtitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            subtitle,
+            style: TextStyle(fontSize: 10.0),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
   }
 }
