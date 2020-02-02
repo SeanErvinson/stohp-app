@@ -47,3 +47,8 @@ const TextStyle cardHeader = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 14.0,
 );
+
+const TextStyle optionButton = TextStyle(
+  color: Colors.white,
+  fontSize: 14.0,
+);

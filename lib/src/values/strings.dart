@@ -21,4 +21,9 @@ class Strings {
   static const String close = "Close";
   static const String scanService = "Scan";
   static const String scanError = "Invalid code!";
+  static const String yesOption = "Yes";
+  static const String noOption = "No";
+  static const String cancelTripDesc =
+      "Are you sure you want to cancel your trip?";
+  static const String cancelTripTitle = "Cancel trip?";
 }
