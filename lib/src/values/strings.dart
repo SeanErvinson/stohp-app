@@ -16,7 +16,9 @@ class Strings {
   static const String newsStoriesHeader = "News & Stories";
   static const String servicesHeader = "Services";
   static const String wakeService = "Wake";
-  static const String stopService = "Stop";
+  static const String stopService = "Para";
   static const String mapService = "View";
   static const String close = "Close";
+  static const String scanService = "Scan";
+  static const String scanError = "Invalid code!";
 }
