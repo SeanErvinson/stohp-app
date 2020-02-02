@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/home/news_stories/news_stories_section.dart';
-import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
-import 'package:stohp/src/components/home/services/bloc/stop_bloc.dart';
 import 'package:stohp/src/components/home/services/services_section.dart';
 import 'package:stohp/src/components/home/services/wake/travel_status_bar.dart';
 import 'package:stohp/src/values/values.dart';
@@ -12,45 +9,39 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LocationTrackBloc>(
-      create: (context) => LocationTrackBloc(),
-      child: BlocProvider<StopBloc>(
-        create: (context) => StopBloc(),
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: bgSecondary,
-            body: Stack(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: bgSecondary,
+        body: Stack(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Column(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          flex: 1,
-                          child: GreetingHeader(),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.person),
-                          onPressed: () {},
-                        )
-                      ],
+                    Flexible(
+                      flex: 1,
+                      child: GreetingHeader(),
                     ),
-                    ServicesSection(),
-                    // ActivitiesSection(),
-                    NewsStoriesSection(),
+                    IconButton(
+                      icon: Icon(Icons.person),
+                      onPressed: () {},
+                    )
                   ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: TravelStatusBar(),
-                ),
+                ServicesSection(),
+                // ActivitiesSection(),
+                NewsStoriesSection(),
               ],
             ),
-          ),
+            Positioned(
+              bottom: 0,
+              child: TravelStatusBar(),
+            ),
+          ],
         ),
-      ),
+      ),destionation 
     );
   }
 }
