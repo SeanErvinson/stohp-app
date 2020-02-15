@@ -13,8 +13,12 @@ class TrackLocation extends LocationTrackEvent {
   TrackLocation(this.selectedPlace);
 }
 
-class CancelTrackLocation extends LocationTrackEvent {
-  final Place currentLocation;
+class CancelTrackLocation extends LocationTrackEvent {}
 
-  CancelTrackLocation(this.currentLocation);
+class LocationUpdate extends LocationTrackEvent {}
+
+class UpdateTrackLocation extends LocationTrackEvent {
+  final Position currentPosition;
+
+  UpdateTrackLocation(this.currentPosition);
 }

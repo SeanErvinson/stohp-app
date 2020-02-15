@@ -9,7 +9,12 @@ abstract class LocationTrackState extends Equatable {
 class LocationTrackInitial extends LocationTrackState {}
 
 class LocationRunning extends LocationTrackState {
-  final Place place;
+  LocationRunning();
+}
 
-  LocationRunning(this.place);
+class LocationTrackUpdating extends LocationTrackState {
+  final Place destination;
+  final Place source;
+
+  LocationTrackUpdating(this.destination, this.source);
 }
