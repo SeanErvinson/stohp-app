@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/models/place.dart';
 import 'package:stohp/src/repository/places_repository.dart';
 import 'package:stohp/src/values/values.dart';
+
 import 'bloc/place_bloc.dart';
 
 class LocationForm extends StatefulWidget {
@@ -51,8 +54,15 @@ class _LocationFormState extends State<LocationForm> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
+                  PlacesSearchResult result = state.places[index];
+                  Place selectedPlace = Place(
+                      formattedAddress: result.formattedAddress,
+                      id: result.id,
+                      lat: result.geometry.location.lat,
+                      lng: result.geometry.location.lng,
+                      name: result.name);
                   BlocProvider.of<LocationTrackBloc>(context)
-                      .add(TrackLocation(state.places[index]));
+                      .add(TrackLocation(selectedPlace));
                   Navigator.of(context).pop();
                 },
                 child: SuggestionTile(
@@ -74,12 +84,9 @@ class _LocationFormState extends State<LocationForm> {
                   maxLines: 1,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    icon: Icon(Icons.location_on),
-                    hintText: Strings.destinationHint,
-                    hintStyle: TextStyle(
-                      fontSize: 12
-                    )
-                  ),
+                      icon: Icon(Icons.location_on),
+                      hintText: Strings.destinationHint,
+                      hintStyle: TextStyle(fontSize: 12)),
                 ),
                 Expanded(
                   child: placeListView,
