@@ -26,4 +26,5 @@ class Strings {
   static const String cancelTripDesc =
       "Are you sure you want to cancel your trip?";
   static const String cancelTripTitle = "Cancel trip?";
+  static const String destinationHint = "Where are you going?";
 }

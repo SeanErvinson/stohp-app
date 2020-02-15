@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
 import 'package:stohp/src/repository/places_repository.dart';
+import 'package:stohp/src/values/values.dart';
 import 'bloc/place_bloc.dart';
 
 class LocationForm extends StatefulWidget {
@@ -63,18 +64,28 @@ class _LocationFormState extends State<LocationForm> {
           );
         }
         return Expanded(
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller: _textEditingController,
-                focusNode: _textFocus,
-                maxLines: 1,
-                textInputAction: TextInputAction.done,
-              ),
-              Expanded(
-                child: placeListView,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  controller: _textEditingController,
+                  focusNode: _textFocus,
+                  maxLines: 1,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.location_on),
+                    hintText: Strings.destinationHint,
+                    hintStyle: TextStyle(
+                      fontSize: 12
+                    )
+                  ),
+                ),
+                Expanded(
+                  child: placeListView,
+                ),
+              ],
+            ),
           ),
         );
       },
