@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/card_header.dart';
 import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/models/place.dart';
 import 'package:stohp/src/values/values.dart';
 
 import 'bloc/stop_bloc.dart';
@@ -34,7 +35,8 @@ class ServicesSection extends StatelessWidget {
                     builder: (context, state) {
                       VoidCallback onClick;
                       if (state is LocationRunning)
-                        onClick = () => _onConfirmationDialog(context);
+                        onClick =
+                            () => _onConfirmationDialog(context, state.place);
                       else
                         onClick = () => Navigator.of(context)
                             .pushNamed("location-destination");
@@ -95,7 +97,8 @@ class ServicesSection extends StatelessWidget {
     );
   }
 
-  _onConfirmationDialog(BuildContext context) {
+  _onConfirmationDialog(BuildContext context, Place place) {
+    final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
     Alert(
       context: context,
       type: AlertType.warning,
@@ -108,7 +111,7 @@ class ServicesSection extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             onPressed: () {
-              // Cancel current trip
+              _bloc.add(CancelTrackLocation(place));
               Navigator.of(context).pop();
               Navigator.of(context).pushNamed("location-destination");
             }),

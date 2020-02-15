@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/option_button.dart';
 import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/models/place.dart';
 import 'package:stohp/src/values/values.dart';
 
 class PositionDialog extends StatelessWidget {
@@ -54,7 +55,7 @@ class PositionDialog extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            state.location,
+                            state.place.name,
                             style: Theme.of(context).textTheme.subhead,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
@@ -95,8 +96,8 @@ class PositionDialog extends StatelessWidget {
                                     color: redPrimary,
                                     child: Text(Strings.cancel,
                                         style: optionButton),
-                                    onPressed: () =>
-                                        buildConfirmationAlert(context).show(),
+                                    onPressed: () => buildConfirmationAlert(
+                                        context, state.place),
                                   ),
                                 ),
                               ),
@@ -137,8 +138,9 @@ class PositionDialog extends StatelessWidget {
     );
   }
 
-  Alert buildConfirmationAlert(BuildContext context) {
-    return Alert(
+  Alert buildConfirmationAlert(BuildContext context, Place place) {
+    final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
+    Alert(
       context: context,
       type: AlertType.error,
       title: Strings.cancelTripTitle,
@@ -147,7 +149,7 @@ class PositionDialog extends StatelessWidget {
         OptionButton(
           color: redPrimary,
           onPressed: () {
-            // Call remove track
+            _bloc.add(CancelTrackLocation(place));
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
@@ -161,7 +163,7 @@ class PositionDialog extends StatelessWidget {
           title: Strings.noOption,
         ),
       ],
-    );
+    ).show();
   }
 }
 
