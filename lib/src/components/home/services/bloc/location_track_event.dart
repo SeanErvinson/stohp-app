@@ -8,7 +8,13 @@ abstract class LocationTrackEvent extends Equatable {
 }
 
 class TrackLocation extends LocationTrackEvent {
-  final PlacesSearchResult selectedLocation;
+  final Place selectedPlace;
 
-  TrackLocation(this.selectedLocation);
+  TrackLocation(this.selectedPlace);
+}
+
+class CancelTrackLocation extends LocationTrackEvent {
+  final Place currentLocation;
+
+  CancelTrackLocation(this.currentLocation);
 }
