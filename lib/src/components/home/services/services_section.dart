@@ -35,8 +35,7 @@ class ServicesSection extends StatelessWidget {
                     builder: (context, state) {
                       VoidCallback onClick;
                       if (state is LocationRunning)
-                        onClick =
-                            () => _onConfirmationDialog(context, state.place);
+                        onClick = () => _onConfirmationDialog(context);
                       else
                         onClick = () => Navigator.of(context)
                             .pushNamed("location-destination");
@@ -97,7 +96,7 @@ class ServicesSection extends StatelessWidget {
     );
   }
 
-  _onConfirmationDialog(BuildContext context, Place place) {
+  _onConfirmationDialog(BuildContext context) {
     final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
     Alert(
       context: context,
@@ -111,7 +110,7 @@ class ServicesSection extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             onPressed: () {
-              _bloc.add(CancelTrackLocation(place));
+              _bloc.add(CancelTrackLocation());
               Navigator.of(context).pop();
               Navigator.of(context).pushNamed("location-destination");
             }),
