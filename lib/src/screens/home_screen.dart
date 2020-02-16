@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/home/news_stories/news_stories_section.dart';
-import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/components/home/services/services_section.dart';
 import 'package:stohp/src/components/home/services/wake/travel_status_bar.dart';
 import 'package:stohp/src/values/values.dart';
@@ -37,10 +37,10 @@ class HomeScreen extends StatelessWidget {
                 NewsStoriesSection(),
               ],
             ),
-            BlocBuilder<LocationTrackBloc, LocationTrackState>(
-              bloc: BlocProvider.of<LocationTrackBloc>(context),
+            BlocBuilder<WakeBloc, WakeState>(
+              bloc: BlocProvider.of<WakeBloc>(context),
               builder: (context, state) {
-                if (state is LocationRunning) {
+                if (state is WakeRunning) {
                   return Positioned(
                     bottom: 0,
                     child: TravelStatusBar(

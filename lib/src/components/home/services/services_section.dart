@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/card_header.dart';
-import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
-import 'package:stohp/src/models/place.dart';
+import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
 import 'bloc/stop_bloc.dart';
@@ -31,10 +30,10 @@ class ServicesSection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  BlocBuilder<LocationTrackBloc, LocationTrackState>(
+                  BlocBuilder<WakeBloc, WakeState>(
                     builder: (context, state) {
                       VoidCallback onClick;
-                      if (state is LocationRunning)
+                      if (state is WakeRunning)
                         onClick = () => _onConfirmationDialog(context);
                       else
                         onClick = () => Navigator.of(context)
@@ -97,7 +96,7 @@ class ServicesSection extends StatelessWidget {
   }
 
   _onConfirmationDialog(BuildContext context) {
-    final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
+    final WakeBloc _bloc = BlocProvider.of<WakeBloc>(context);
     Alert(
       context: context,
       type: AlertType.warning,

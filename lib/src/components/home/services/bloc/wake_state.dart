@@ -1,20 +1,20 @@
-part of 'location_track_bloc.dart';
+part of 'wake_bloc.dart';
 
-abstract class LocationTrackState extends Equatable {
-  const LocationTrackState();
+abstract class WakeState extends Equatable {
+  const WakeState();
   @override
   List<Object> get props => [];
 }
 
-class LocationTrackInitial extends LocationTrackState {}
+class WakeInitial extends WakeState {}
 
-class LocationRunning extends LocationTrackState {
+class WakeRunning extends WakeState {
   final Place destination;
   final Place source;
   final Distance distance;
   final List<LatLng> polylineCoordinates;
 
-  LocationRunning(
+  WakeRunning(
       this.destination, this.source, this.distance, this.polylineCoordinates);
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/option_button.dart';
-import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
 class PositionDialog extends StatelessWidget {
@@ -21,10 +21,10 @@ class PositionDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: BlocBuilder<LocationTrackBloc, LocationTrackState>(
-        bloc: BlocProvider.of<LocationTrackBloc>(context),
+      child: BlocBuilder<WakeBloc, WakeState>(
+        bloc: BlocProvider.of<WakeBloc>(context),
         builder: (context, state) {
-          if (state is LocationRunning) {
+          if (state is WakeRunning) {
             _cameraPosition = CameraPosition(
                 target: LatLng(state.source.lat, state.source.lng), zoom: 14.0);
             return Container(
@@ -108,7 +108,7 @@ class PositionDialog extends StatelessWidget {
                                     child: Text(Strings.cancel,
                                         style: optionButton),
                                     onPressed: () =>
-                                        buildConfirmationAlert(context),
+                                        _onConfirmationAlert(context),
                                   ),
                                 ),
                               ),
@@ -154,8 +154,8 @@ class PositionDialog extends StatelessWidget {
     );
   }
 
-  Alert buildConfirmationAlert(BuildContext context) {
-    final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
+  _onConfirmationAlert(BuildContext context) {
+    final WakeBloc _bloc = BlocProvider.of<WakeBloc>(context);
     Alert(
       context: context,
       type: AlertType.error,

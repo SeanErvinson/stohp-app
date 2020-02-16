@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:stohp/src/components/home/services/bloc/location_track_bloc.dart';
+import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/models/place.dart';
 import 'package:stohp/src/repository/places_repository.dart';
 import 'package:stohp/src/values/values.dart';
@@ -61,7 +61,7 @@ class _LocationFormState extends State<LocationForm> {
                       lat: result.geometry.location.lat,
                       lng: result.geometry.location.lng,
                       name: result.name);
-                  BlocProvider.of<LocationTrackBloc>(context)
+                  BlocProvider.of<WakeBloc>(context)
                       .add(StartTracking(selectedPlace));
                   Navigator.of(context).pop();
                 },

@@ -8,7 +8,7 @@ import 'package:stohp/src/screens/screens.dart';
 import 'package:bloc/bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
-import 'components/home/services/bloc/location_track_bloc.dart';
+import 'components/home/services/bloc/wake_bloc.dart';
 import 'components/home/services/bloc/stop_bloc.dart';
 
 void main() {
@@ -19,8 +19,8 @@ void main() {
     BlocProvider(
       create: (context) =>
           AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
-      child: BlocProvider<LocationTrackBloc>(
-        create: (context) => LocationTrackBloc(),
+      child: BlocProvider<WakeBloc>(
+        create: (context) => WakeBloc(),
         child: BlocProvider<StopBloc>(
           create: (context) => StopBloc(),
           child: StohpApp(
