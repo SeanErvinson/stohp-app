@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:stohp/src/components/home/services/wake/position_dialog.dart';
+import 'package:stohp/src/models/distance.dart';
 import 'package:stohp/src/values/values.dart';
 
 class TravelStatusBar extends StatelessWidget {
-  const TravelStatusBar({
-    Key key,
-  }) : super(key: key);
+  final Distance _distance;
+  const TravelStatusBar({Key key, @required Distance distance})
+      : _distance = distance,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,11 @@ class TravelStatusBar extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 12.0),
                   children: [
                     TextSpan(
-                      text: "32",
+                      text: _distance.distanceInText,
                       style: TextStyle(color: Colors.white, fontSize: 12.0),
                     ),
                     TextSpan(
-                      text: "km",
+                      text: _distance.distanceInUnit,
                       style: TextStyle(color: Colors.white, fontSize: 12.0),
                     )
                   ],
@@ -47,11 +49,11 @@ class TravelStatusBar extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 12.0),
                   children: [
                     TextSpan(
-                      text: "12",
+                      text: _distance.durationInText,
                       style: TextStyle(color: Colors.white, fontSize: 12.0),
                     ),
                     TextSpan(
-                      text: "mins",
+                      text: _distance.durationInUnit,
                       style: TextStyle(color: Colors.white, fontSize: 12.0),
                     )
                   ],
