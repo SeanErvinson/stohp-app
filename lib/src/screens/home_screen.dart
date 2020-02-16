@@ -40,12 +40,14 @@ class HomeScreen extends StatelessWidget {
             BlocBuilder<LocationTrackBloc, LocationTrackState>(
               bloc: BlocProvider.of<LocationTrackBloc>(context),
               builder: (context, state) {
-                if (state is LocationRunning || state is LocationTrackUpdating) {
+                if (state is LocationRunning) {
                   return Positioned(
                     bottom: 0,
-                    child: TravelStatusBar(),
+                    child: TravelStatusBar(
+                      distance: state.distance,
+                    ),
                   );
-                }else{
+                } else {
                   return Container();
                 }
               },
