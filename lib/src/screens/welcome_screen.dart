@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stohp/src/components/common/authentication_bloc/authentication_bloc.dart';
+import 'package:stohp/src/components/common/bloc/authentication_bloc.dart';
 import 'package:stohp/src/components/login/bloc/bloc.dart';
 import 'package:stohp/src/components/login/login_google_button.dart';
 import 'package:stohp/src/repository/user_repository.dart';
