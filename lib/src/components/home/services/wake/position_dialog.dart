@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/option_button.dart';
@@ -12,8 +11,6 @@ import 'package:stohp/src/values/values.dart';
 class PositionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    final LocationTrackBloc _bloc = BlocProvider.of<LocationTrackBloc>(context);
     Completer<GoogleMapController> _controller = Completer();
     final double _usabelScreenHeight =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
@@ -24,132 +21,124 @@ class PositionDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: StreamBuilder(
-        stream: geolocator.getPositionStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            _bloc.add(UpdateTrackLocation(snapshot.data));
-            return BlocBuilder<LocationTrackBloc, LocationTrackState>(
-              bloc: _bloc,
-              builder: (context, state) {
-                if (state is LocationTrackUpdating) {
-                  _cameraPosition = CameraPosition(
-                      target: LatLng(state.source.lat, state.source.lng),
-                      zoom: 14.0);
-                  return Container(
-                    height: _usabelScreenHeight * .8,
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: _usabelScreenHeight * .40,
-                          child: GoogleMap(
-                            mapType: MapType.normal,
-                            minMaxZoomPreference:
-                                MinMaxZoomPreference(14.0, 18.0),
-                            rotateGesturesEnabled: false,
-                            myLocationEnabled: true,
-                            tiltGesturesEnabled: false,
-                            markers: Set<Marker>()
-                              ..add(Marker(
-                                  markerId: MarkerId('Destination'),
-                                  position: LatLng(state.destination.lat,
-                                      state.destination.lng))),
-                            initialCameraPosition: _cameraPosition,
-                            onMapCreated: (GoogleMapController controller) {
-                              _controller.complete(controller);
-                            },
+      child: BlocBuilder<LocationTrackBloc, LocationTrackState>(
+        bloc: BlocProvider.of<LocationTrackBloc>(context),
+        builder: (context, state) {
+          if (state is LocationRunning) {
+            _cameraPosition = CameraPosition(
+                target: LatLng(state.source.lat, state.source.lng), zoom: 14.0);
+            return Container(
+              height: _usabelScreenHeight * .8,
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: _usabelScreenHeight * .40,
+                    child: GoogleMap(
+                      mapType: MapType.normal,
+                      minMaxZoomPreference: MinMaxZoomPreference(14.0, 18.0),
+                      rotateGesturesEnabled: false,
+                      myLocationEnabled: true,
+                      tiltGesturesEnabled: false,
+                      markers: Set<Marker>()
+                        ..add(Marker(
+                            markerId: MarkerId('Destination'),
+                            position: LatLng(
+                                state.destination.lat, state.destination.lng))),
+                      polylines: Set<Polyline>()
+                        ..add(Polyline(
+                          polylineId: PolylineId("line"),
+                          points: state.polylineCoordinates,
+                          endCap: Cap.roundCap,
+                          startCap: Cap.roundCap,
+                          color: bluePrimary,
+                        )),
+                      initialCameraPosition: _cameraPosition,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14.0, vertical: 8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            state.destination.name,
+                            style: Theme.of(context).textTheme.subhead,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14.0, vertical: 8.0),
-                            child: Column(
-                              children: <Widget>[
-                                Text(
-                                  state.destination.name,
-                                  style: Theme.of(context).textTheme.subhead,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: true,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        StatusInfo(
-                                          title: Strings.distanceRemaining,
-                                          value: "144",
-                                          unit: "km",
-                                        ),
-                                        StatusInfo(
-                                          title: Strings.estimatedTimeOfArrival,
-                                          value: "54",
-                                          unit: "mins",
-                                        ),
-                                      ],
-                                    ),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  StatusInfo(
+                                      title: Strings.distanceRemaining,
+                                      value: state.distance.distanceInText,
+                                      unit: state.distance.distanceInUnit),
+                                  StatusInfo(
+                                    title: Strings.estimatedTimeOfArrival,
+                                    value: state.distance.durationInText,
+                                    unit: state.distance.durationInUnit,
                                   ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Container(
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 4),
-                                        width: double.infinity,
-                                        child: FlatButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.zero),
-                                          color: redPrimary,
-                                          child: Text(Strings.cancel,
-                                              style: optionButton),
-                                          onPressed: () =>
-                                              buildConfirmationAlert(context),
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Container(
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 4),
-                                        width: double.infinity,
-                                        child: FlatButton(
-                                          shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  color: Colors.black54),
-                                              borderRadius: BorderRadius.zero),
-                                          child: Text(
-                                            Strings.close,
-                                            style: optionButton.copyWith(
-                                                color: bluePrimary),
-                                          ),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                          Row(
+                            children: <Widget>[
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.zero),
+                                    color: redPrimary,
+                                    child: Text(Strings.cancel,
+                                        style: optionButton),
+                                    onPressed: () =>
+                                        buildConfirmationAlert(context),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  width: double.infinity,
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(color: Colors.black54),
+                                        borderRadius: BorderRadius.zero),
+                                    child: Text(
+                                      Strings.close,
+                                      style: optionButton.copyWith(
+                                          color: bluePrimary),
+                                    ),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
+                  )
+                ],
+              ),
             );
           } else {
             return Container(
@@ -176,7 +165,7 @@ class PositionDialog extends StatelessWidget {
         OptionButton(
           color: redPrimary,
           onPressed: () {
-            _bloc.add(CancelTrackLocation());
+            _bloc.add(CancelTracking());
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
