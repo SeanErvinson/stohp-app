@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stohp/src/components/common/authentication_bloc/bloc.dart';
+import 'package:stohp/src/components/common/authentication_bloc/authentication_bloc.dart';
 import 'package:stohp/src/components/register/bloc/bloc.dart';
 import 'package:stohp/src/values/values.dart';
 

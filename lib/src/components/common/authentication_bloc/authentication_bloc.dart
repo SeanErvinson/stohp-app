@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:stohp/src/repository/user_repository.dart';
-import './bloc.dart';
+import 'package:equatable/equatable.dart';
+
+part 'authentication_state.dart';
+part 'authentication_event.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
