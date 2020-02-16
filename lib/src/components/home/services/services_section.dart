@@ -110,7 +110,7 @@ class ServicesSection extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             onPressed: () {
-              _bloc.add(CancelTrackLocation());
+              _bloc.add(CancelTracking());
               Navigator.of(context).pop();
               Navigator.of(context).pushNamed("location-destination");
             }),

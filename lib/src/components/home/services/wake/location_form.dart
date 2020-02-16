@@ -62,7 +62,7 @@ class _LocationFormState extends State<LocationForm> {
                       lng: result.geometry.location.lng,
                       name: result.name);
                   BlocProvider.of<LocationTrackBloc>(context)
-                      .add(TrackLocation(selectedPlace));
+                      .add(StartTracking(selectedPlace));
                   Navigator.of(context).pop();
                 },
                 child: SuggestionTile(
