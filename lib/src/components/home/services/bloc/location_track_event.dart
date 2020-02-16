@@ -7,18 +7,16 @@ abstract class LocationTrackEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TrackLocation extends LocationTrackEvent {
+class CancelTracking extends LocationTrackEvent {}
+
+class StartTracking extends LocationTrackEvent {
   final Place selectedPlace;
 
-  TrackLocation(this.selectedPlace);
+  StartTracking(this.selectedPlace);
 }
 
-class CancelTrackLocation extends LocationTrackEvent {}
-
-class LocationUpdate extends LocationTrackEvent {}
-
-class UpdateTrackLocation extends LocationTrackEvent {
+class UpdateTracking extends LocationTrackEvent {
   final Position currentPosition;
 
-  UpdateTrackLocation(this.currentPosition);
+  UpdateTracking(this.currentPosition);
 }

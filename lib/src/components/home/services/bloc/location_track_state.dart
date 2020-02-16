@@ -9,12 +9,15 @@ abstract class LocationTrackState extends Equatable {
 class LocationTrackInitial extends LocationTrackState {}
 
 class LocationRunning extends LocationTrackState {
-  LocationRunning();
-}
-
-class LocationTrackUpdating extends LocationTrackState {
   final Place destination;
   final Place source;
+  final Distance distance;
+  final List<LatLng> polylineCoordinates;
 
-  LocationTrackUpdating(this.destination, this.source);
+  LocationRunning(
+      this.destination, this.source, this.distance, this.polylineCoordinates);
+
+  @override
+  List<Object> get props =>
+      [destination, source, distance, polylineCoordinates];
 }
