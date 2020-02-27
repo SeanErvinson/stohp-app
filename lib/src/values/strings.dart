@@ -27,4 +27,8 @@ class Strings {
       "Are you sure you want to cancel your trip?";
   static const String cancelTripTitle = "Cancel trip?";
   static const String destinationHint = "Where are you going?";
+  static const String greetingsDefault = "Hello ";
+  static const String greetingsMorning = "Good Morning ";
+  static const String greetingsAfternoon = "Good Afternoon ";
+  static const String greetingsEvening = "Good Evening ";
 }
