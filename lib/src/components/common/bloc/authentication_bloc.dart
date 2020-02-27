@@ -26,7 +26,7 @@ class AuthenticationBloc
     if (event is AppStarted) {
       yield* _mapAppStartedToState();
     } else if (event is LoggedIn) {
-      yield* _mapLoggedInToState(event.token);
+      yield* _mapLoggedInToState();
     } else if (event is LoggedOut) {
       yield* _mapLoggedOutToState();
     }
@@ -47,8 +47,8 @@ class AuthenticationBloc
     }
   }
 
-  Stream<AuthenticationState> _mapLoggedInToState(String token) async* {
-    await _userRepository.persistToken(token);
+  Stream<AuthenticationState> _mapLoggedInToState() async* {
+    String token = await _userRepository.getToken();
     User user = await _userRepository.getUser(token);
     yield (Authenticated(user));
   }
