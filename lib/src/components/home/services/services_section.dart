@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/card_header.dart';
+import 'package:stohp/src/components/common/stohp_icons.dart';
 import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
@@ -69,21 +70,39 @@ class ServicesSection extends StatelessWidget {
                     },
                     child: BlocBuilder<StopBloc, StopState>(
                       builder: (context, state) {
+                        String label;
+                        IconData icon;
+                        Color backgroundColor;
+                        VoidCallback onPressed;
+                        VoidCallback onLongPressed;
                         if (state is StopQRCaptured) {
-                          return StopButton(qrCode: state.qrCode);
+                          label = Strings.stopService;
+                          backgroundColor = redPrimary;
+                          onLongPressed = () =>
+                              BlocProvider.of<StopBloc>(context)
+                                  .add(CancelStop());
+                          onPressed = () => BlocProvider.of<StopBloc>(context)
+                              .add(SendStopRequest(state.qrCode));
+                          icon = Stohp.block;
+                        } else {
+                          label = Strings.scanService;
+                          onPressed = () => BlocProvider.of<StopBloc>(context)
+                              .add(ScanQREvent());
+                          icon = Stohp.scan;
                         }
                         return ServiceButton(
-                          title: Strings.scanService,
-                          icon: Icons.pause,
-                          onPressed: () => BlocProvider.of<StopBloc>(context)
-                              .add(ScanQREvent()),
+                          title: label,
+                          icon: icon,
+                          onPressed: onPressed,
+                          onLongPressed: onLongPressed,
+                          color: backgroundColor,
                         );
                       },
                     ),
                   ),
                   ServiceButton(
                     title: Strings.mapService,
-                    icon: Icons.map,
+                    icon: Stohp.map_signs,
                     onPressed: () => Navigator.pushNamed(context, "navigation"),
                   ),
                 ],
@@ -125,58 +144,41 @@ class ServicesSection extends StatelessWidget {
   }
 }
 
-class StopButton extends StatelessWidget {
-  final String _qrCode;
-  const StopButton({Key key, String qrCode})
-      : this._qrCode = qrCode,
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final StopBloc _bloc = BlocProvider.of<StopBloc>(context);
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () => _bloc.add(SendStopRequest(_qrCode)),
-          onLongPress: () => _bloc.add(CancelStop()),
-          child: CircleAvatar(
-            backgroundColor: redPrimary,
-            foregroundColor: Colors.white,
-            child: const Icon(Icons.stop, size: 24.0),
-          ),
-        ),
-        Text(Strings.stopService)
-      ],
-    );
-  }
-}
-
 class ServiceButton extends StatelessWidget {
   final String _title;
   final VoidCallback _onPressed;
+  final VoidCallback _onLongPressed;
   final IconData _icon;
+  final Color _color;
 
   const ServiceButton({
     Key key,
     String title,
     VoidCallback onPressed,
+    VoidCallback onLongPressed,
     IconData icon,
+    Color color,
   })  : this._title = title,
         this._onPressed = onPressed,
         this._icon = icon,
+        this._onLongPressed = onLongPressed ?? null,
+        this._color = color ?? darkBlue,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        CircleAvatar(
-          backgroundColor: darkBlue,
-          foregroundColor: Colors.white,
-          child: IconButton(
-            icon: Icon(_icon),
-            iconSize: 24.0,
-            onPressed: _onPressed,
+        MaterialButton(
+          padding: EdgeInsets.all(14),
+          shape: CircleBorder(),
+          onPressed: _onPressed,
+          onLongPress: _onLongPressed,
+          color: _color,
+          child: Icon(
+            _icon,
+            color: Colors.white,
+            size: 28,
           ),
         ),
         Text(_title)
