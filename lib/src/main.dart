@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/DefaultBlocDelegate.dart';
 import 'package:stohp/src/components/common/bloc/alert_bloc.dart';
 import 'package:stohp/src/components/common/bloc/authentication_bloc.dart';
+import 'package:stohp/src/components/common/bloc/greet_bloc.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/screens/screens.dart';
 import 'package:bloc/bloc.dart';
@@ -84,7 +85,10 @@ class StohpApp extends StatelessWidget {
             return WelcomeScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
-            return HomeScreen(user: state.user);
+            return BlocProvider<GreetBloc>(
+              create: (context) => GreetBloc()..add(GetGreetings()),
+              child: HomeScreen(user: state.user),
+            );
           }
         }));
   }
