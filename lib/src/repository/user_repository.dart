@@ -55,6 +55,31 @@ class UserRepository {
     return null;
   }
 
+  Future<User> registerUser(String username, String password) async {
+    String url = "${ApiService.baseUrl}/api/v1/users/";
+    Map body = {
+      "username": username,
+      "password": password,
+      "is_commuter": true,
+    };
+    try {
+      var response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        var user = User.fromJson(jsonData);
+        return user;
+      }
+      throw BadRequestException(response.body.toString());
+    } catch (e) {
+      throw BadRequestException(e.toString());
+    }
+  }
+
   Future<String> verifyStopCode(String stopCode) async {
     String url =
         "${ApiService.baseUrl}/api/v1/users/verify-stop-code/$stopCode";
