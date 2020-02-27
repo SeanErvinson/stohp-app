@@ -1,46 +1,73 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:convert';
+
+import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:stohp/src/models/user.dart';
+import 'package:stohp/src/services/api_service.dart';
+import 'package:stohp/src/services/app_exception.dart';
 
 class UserRepository {
-  final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  final String _tokenKey = "token";
 
-  UserRepository({FirebaseAuth firebaseAuth, GoogleSignIn googleSignin})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignin ?? GoogleSignIn();
-
-  Future<FirebaseUser> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    await _firebaseAuth.signInWithCredential(credential);
-    return _firebaseAuth.currentUser();
+  Future<String> authenticate({@required username, @required password}) async {
+    String url = "${ApiService.baseUrl}/api/v1/auth/login/";
+    var response = await http
+        .post(url, body: {'username': username, 'password': password});
+    if (response.statusCode == 200) {
+      Map<String, dynamic> token = jsonDecode(response.body);
+      return token["token"];
+    }
+    return null;
   }
 
-  Future<void> signInWithCredentials(String email, String password) {
-    return _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+  Future<User> getUser(String token) async {
+    String url = "${ApiService.baseUrl}/api/v1/users/access-user/";
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Token $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      var user = User.fromJson(jsonData);
+      return user;
+    }
+    return null;
   }
 
-  Future<void> signUp(String email, String password) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<void> deleteToken() async {
+    final storage = new FlutterSecureStorage();
+    await storage.delete(key: _tokenKey);
+    return;
   }
 
-  Future<void> signOut() async {
-    return Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
+  Future<void> persistToken(String token) async {
+    final storage = new FlutterSecureStorage();
+    await storage.write(key: _tokenKey, value: token);
+    return;
   }
 
-  Future<bool> isSignedIn() async {
-    final currentUser = await _firebaseAuth.currentUser();
-    return currentUser != null;
+  Future<String> getToken() async {
+    final storage = new FlutterSecureStorage();
+    String value = await storage.read(key: _tokenKey);
+    if (value != null) return value;
+    return null;
   }
 
-  // Return custom user model
-  Future<String> getUser() async {
-    // Get from firebase db
-    return (await _firebaseAuth.currentUser()).email;
+  Future<String> verifyStopCode(String stopCode) async {
+    String url =
+        "${ApiService.baseUrl}/api/v1/users/verify-stop-code/$stopCode";
+    var token = await getToken();
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Token $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      return jsonData;
+    }
+    throw BadRequestException(response.body.toString());
   }
 }
