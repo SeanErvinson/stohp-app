@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/services/api_service.dart';
 import 'package:web_socket_channel/io.dart';
@@ -52,13 +52,17 @@ class StopBloc extends Bloc<StopEvent, StopState> {
   }
 
   Stream<StopState> _mapScanQR() async* {
-    String result = await scanner.scan();
-    if (result == null) yield StopInitial();
-    if (await _userRepository.verifyStopCode(result)) {
-      _socket = IOWebSocketChannel.connect(
-          '${ApiService.baseWsUrl}/ws/stop/$result/');
-      yield StopQRCaptured(result);
-    } else {
+    try {
+      String result = await BarcodeScanner.scan();
+      if (result == null) yield StopInitial();
+      if (await _userRepository.verifyStopCode(result)) {
+        _socket = IOWebSocketChannel.connect(
+            '${ApiService.baseWsUrl}/ws/stop/$result/');
+        yield StopQRCaptured(result);
+      } else {
+        yield StopScanFailed();
+      }
+    } catch (e) {
       yield StopScanFailed();
     }
   }
