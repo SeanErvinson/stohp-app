@@ -22,10 +22,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Stream<RegisterState> Function(RegisterEvent event) next,
   ) {
     final nonDebounceStream = events.where((event) {
-      return (event is! OnEmailChanged && event is! OnPasswordChanged);
+      return (event is! OnUsernameChanged && event is! OnPasswordChanged);
     });
     final debounceStream = events.where((event) {
-      return (event is OnEmailChanged || event is OnPasswordChanged);
+      return (event is OnUsernameChanged || event is OnPasswordChanged);
     }).debounceTime(Duration(milliseconds: 300));
     return super.transformEvents(
       nonDebounceStream.mergeWith([debounceStream]),
@@ -37,7 +37,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> mapEventToState(
     RegisterEvent event,
   ) async* {
-    if (event is OnEmailChanged) {
+    if (event is OnUsernameChanged) {
       yield* _mapEmailChangedToState(event.email);
     } else if (event is OnPasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
@@ -46,9 +46,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     }
   }
 
-  Stream<RegisterState> _mapEmailChangedToState(String email) async* {
+  Stream<RegisterState> _mapEmailChangedToState(String username) async* {
     yield state.update(
-      isEmailValid: Validators.isValidEmail(email),
+      isUsernameValid: Validators.isValidUsername(username),
     );
   }
 
@@ -59,12 +59,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapFormSubmittedToState(
-    String email,
+    String username,
     String password,
   ) async* {
     yield RegisterState.loading();
     try {
-      await _userRepository.signUp(email, password);
+      await _userRepository.registerUser(username, password);
+      String token = await _userRepository.authenticate(
+          username: username, password: password);
+      _userRepository.persistToken(token);
       yield RegisterState.success();
     } catch (_) {
       yield RegisterState.failure();

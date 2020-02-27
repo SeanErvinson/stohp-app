@@ -8,10 +8,10 @@ abstract class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnEmailChanged extends RegisterEvent {
+class OnUsernameChanged extends RegisterEvent {
   final String email;
 
-  const OnEmailChanged({@required this.email});
+  const OnUsernameChanged({@required this.email});
 
   @override
   List<Object> get props => [email];
