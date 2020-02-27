@@ -43,6 +43,7 @@ class UserRepository {
   }
 
   Future<void> persistToken(String token) async {
+    if (token == null) return;
     final storage = new FlutterSecureStorage();
     await storage.write(key: _tokenKey, value: token);
     return;
@@ -80,7 +81,7 @@ class UserRepository {
     }
   }
 
-  Future<String> verifyStopCode(String stopCode) async {
+  Future<bool> verifyStopCode(String stopCode) async {
     String url =
         "${ApiService.baseUrl}/api/v1/users/verify-stop-code/$stopCode";
     var token = await getToken();
@@ -90,9 +91,8 @@ class UserRepository {
       'Authorization': 'Token $token',
     });
     if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
-      return jsonData;
+      return true;
     }
-    throw BadRequestException(response.body.toString());
+    return false;
   }
 }
