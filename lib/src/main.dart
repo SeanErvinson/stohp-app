@@ -70,7 +70,7 @@ class StohpApp extends StatelessWidget {
           "registration": (context) => RegistrationScreen(
                 userRepository: _userRepository,
               ),
-          "setting": (context) => SettingScreen(),
+          "profile": (context) => ProfileScreen(),
           "home": (context) => HomeScreen(),
           "splash": (context) => SplashScreen(),
           "location-destination": (context) => LocationDestinationScreen(),
