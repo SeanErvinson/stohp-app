@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                     autovalidate: true,
                     autocorrect: false,
                     validator: (_) {
-                      return !state.isEmailValid ? 'Invalid Email' : null;
+                      return !state.isUsernameValid ? 'Invalid Email' : null;
                     },
                   ),
                   TextFormField(
@@ -122,7 +122,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onEmailChanged() {
     _loginBloc.add(
-      OnEmailChanged(email: _emailController.text),
+      OnUsernameChanged(username: _emailController.text),
     );
   }
 
@@ -135,7 +135,7 @@ class _LoginFormState extends State<LoginForm> {
   void _onFormSubmitted() {
     _loginBloc.add(
       LoginWithCredentialsPressed(
-        email: _emailController.text,
+        username: _emailController.text,
         password: _passwordController.text,
       ),
     );
