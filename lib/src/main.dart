@@ -25,7 +25,7 @@ void main() {
         child: BlocProvider<AlertBloc>(
           create: (context) => AlertBloc(),
           child: BlocProvider<StopBloc>(
-            create: (context) => StopBloc(),
+            create: (context) => StopBloc(userRepository),
             child: StohpApp(
               userRepository: userRepository,
             ),
