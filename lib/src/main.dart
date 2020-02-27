@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/DefaultBlocDelegate.dart';
+import 'package:stohp/src/components/common/bloc/alert_bloc.dart';
 import 'package:stohp/src/components/common/bloc/authentication_bloc.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/screens/screens.dart';
@@ -21,10 +22,13 @@ void main() {
           AuthenticationBloc(userRepository: userRepository)..add(AppStarted()),
       child: BlocProvider<WakeBloc>(
         create: (context) => WakeBloc(),
-        child: BlocProvider<StopBloc>(
-          create: (context) => StopBloc(),
-          child: StohpApp(
-            userRepository: userRepository,
+        child: BlocProvider<AlertBloc>(
+          create: (context) => AlertBloc(),
+          child: BlocProvider<StopBloc>(
+            create: (context) => StopBloc(),
+            child: StohpApp(
+              userRepository: userRepository,
+            ),
           ),
         ),
       ),
@@ -74,13 +78,13 @@ class StohpApp extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
           if (state is Uninitialized) {
-            return HomeScreen();
+            return WelcomeScreen(userRepository: _userRepository);
           }
           if (state is Unauthenticated) {
             return WelcomeScreen(userRepository: _userRepository);
           }
           if (state is Authenticated) {
-            return HomeScreen(name: state.displayName);
+            return HomeScreen(user: state.user);
           }
         }));
   }
