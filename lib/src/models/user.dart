@@ -1,30 +1,50 @@
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:stohp/src/models/gender.dart';
+import 'package:stohp/src/models/profile.dart';
 
-class Article {
+class User {
   String id;
+  String username;
+  String email;
   String firstName;
   String lastName;
-  String email;
-  Gender gender;
+  bool isDriver;
+  bool isCommuter;
+  Profile profile;
 
-  Article({this.id, this.firstName, this.lastName, this.email, this.gender});
+  User(
+      {this.id,
+      this.username,
+      this.email,
+      this.firstName,
+      this.lastName,
+      this.isDriver,
+      this.isCommuter,
+      this.profile});
 
-  Article.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    email = json['email'];
-    gender = EnumToString.fromString(Gender.values, json["gender"]);
+  User.fromJson(Map<String, dynamic> json) {
+    id = json["user"]['id'];
+    username = json["user"]['username'];
+    email = json["user"]['email'];
+    firstName = json["user"]['first_name'];
+    lastName = json["user"]['last_name'];
+    isDriver = json["user"]['is_driver'];
+    isCommuter = json["user"]['is_commuter'];
+    profile = json["user"]['profile'] != null
+        ? new Profile.fromJson(json["user"]['profile'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
+    data['username'] = this.username;
     data['email'] = this.email;
-    data['gender'] = EnumToString.parse(this.gender);
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['is_driver'] = this.isDriver;
+    data['is_commuter'] = this.isCommuter;
+    if (this.profile != null) {
+      data['profile'] = this.profile.toJson();
+    }
     return data;
   }
 }
