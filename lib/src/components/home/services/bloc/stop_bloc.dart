@@ -1,15 +1,31 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:stohp/src/repository/user_repository.dart';
+import 'package:stohp/src/services/api_service.dart';
+import 'package:web_socket_channel/io.dart';
 
 part 'stop_event.dart';
 part 'stop_state.dart';
 
 class StopBloc extends Bloc<StopEvent, StopState> {
+  final UserRepository _userRepository;
+  IOWebSocketChannel _socket;
+  StreamSubscription _wsSubscription;
+
+  StopBloc(UserRepository userRepository) : _userRepository = userRepository;
+
   @override
   StopState get initialState => StopInitial();
+
+  @override
+  Future<void> close() {
+    _wsSubscription?.cancel();
+    return super.close();
+  }
 
   @override
   Stream<StopState> mapEventToState(
@@ -17,28 +33,33 @@ class StopBloc extends Bloc<StopEvent, StopState> {
   ) async* {
     if (event is ScanQREvent) {
       yield* _mapScanQR();
-    }
-    if (event is CancelStop) {
+    } else if (event is CancelStop) {
       yield* _mapCancelStop();
-    }
-    if (event is SendStopRequest) {
+    } else if (event is SendStopRequest) {
       yield* _mapSendStopRequest(event.qrCode);
     }
   }
-}
 
-Stream<StopState> _mapSendStopRequest(String qrCode) async* {
-  // Sends request to server
-  yield DisableStop(true);
-}
+  Stream<StopState> _mapSendStopRequest(String qrCode) async* {
+    _socket.sink.add(jsonEncode({'stop': true}));
+    _socket.sink.close();
+    _wsSubscription?.cancel();
+    yield DisableStop(true);
+  }
 
-Stream<StopState> _mapCancelStop() async* {
-  yield StopInitial();
-}
+  Stream<StopState> _mapCancelStop() async* {
+    yield StopInitial();
+  }
 
-Stream<StopState> _mapScanQR() async* {
-  String result = await scanner.scan();
-  if (result == null) yield StopInitial();
-  if (result.length > 10) yield StopScanFailed();
-  else yield StopQRCaptured(result);
+  Stream<StopState> _mapScanQR() async* {
+    String result = await scanner.scan();
+    if (result == null) yield StopInitial();
+    if (await _userRepository.verifyStopCode(result)) {
+      _socket = IOWebSocketChannel.connect(
+          '${ApiService.baseWsUrl}/ws/stop/$result/');
+      yield StopQRCaptured(result);
+    } else {
+      yield StopScanFailed();
+    }
+  }
 }
