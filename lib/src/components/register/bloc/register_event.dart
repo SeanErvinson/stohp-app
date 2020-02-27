@@ -9,15 +9,15 @@ abstract class RegisterEvent extends Equatable {
 }
 
 class OnUsernameChanged extends RegisterEvent {
-  final String email;
+  final String username;
 
-  const OnUsernameChanged({@required this.email});
-
-  @override
-  List<Object> get props => [email];
+  const OnUsernameChanged({@required this.username});
 
   @override
-  String toString() => 'EmailChanged { email :$email }';
+  List<Object> get props => [username];
+
+  @override
+  String toString() => 'Username changed { username :$username }';
 }
 
 class OnPasswordChanged extends RegisterEvent {
@@ -33,19 +33,19 @@ class OnPasswordChanged extends RegisterEvent {
 }
 
 class OnSubmitted extends RegisterEvent {
-  final String email;
+  final String username;
   final String password;
 
   const OnSubmitted({
-    @required this.email,
+    @required this.username,
     @required this.password,
   });
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [username, password];
 
   @override
   String toString() {
-    return 'Submitted { email: $email, password: $password }';
+    return 'Submitted { username: $username, password: $password }';
   }
 }

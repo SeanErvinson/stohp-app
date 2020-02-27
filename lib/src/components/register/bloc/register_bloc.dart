@@ -38,11 +38,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterEvent event,
   ) async* {
     if (event is OnUsernameChanged) {
-      yield* _mapEmailChangedToState(event.email);
+      yield* _mapEmailChangedToState(event.username);
     } else if (event is OnPasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
     } else if (event is OnSubmitted) {
-      yield* _mapFormSubmittedToState(event.email, event.password);
+      yield* _mapFormSubmittedToState(event.username, event.password);
     }
   }
 

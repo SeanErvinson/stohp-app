@@ -10,7 +10,7 @@ class Strings {
   static const String login = "Log In";
   static const String signup = "Sign Up";
   static const String googleLogin = "Log In with Google";
-  static const String emailHint = "Email address";
+  static const String usernameHint = "Username";
   static const String passwordHint = "Password";
   static const String register = "Register";
   static const String newsStoriesHeader = "News & Stories";

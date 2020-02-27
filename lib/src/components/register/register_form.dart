@@ -9,13 +9,14 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   RegisterBloc _registerBloc;
 
   bool get isPopulated =>
-      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _usernameController.text.isNotEmpty &&
+      _passwordController.text.isNotEmpty;
 
   bool isRegisterButtonEnabled(RegisterState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -25,7 +26,7 @@ class _RegisterFormState extends State<RegisterForm> {
   void initState() {
     super.initState();
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
-    _emailController.addListener(_onEmailChanged);
+    _usernameController.addListener(_onUsernameChanged);
     _passwordController.addListener(_onPasswordChanged);
   }
 
@@ -77,15 +78,15 @@ class _RegisterFormState extends State<RegisterForm> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    controller: _emailController,
+                    controller: _usernameController,
                     decoration: InputDecoration(
-                      hintText: Strings.emailHint,
+                      hintText: Strings.usernameHint,
                     ),
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     autocorrect: false,
                     autovalidate: true,
                     validator: (_) {
-                      return !state.isEmailValid ? 'Invalid Email' : null;
+                      return !state.isUsernameValid ? 'Invalid Username' : null;
                     },
                   ),
                   TextFormField(
@@ -119,14 +120,14 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _onEmailChanged() {
+  void _onUsernameChanged() {
     _registerBloc.add(
-      OnEmailChanged(email: _emailController.text),
+      OnUsernameChanged(username: _usernameController.text),
     );
   }
 
@@ -139,7 +140,7 @@ class _RegisterFormState extends State<RegisterForm> {
   void _onFormSubmitted() {
     _registerBloc.add(
       OnSubmitted(
-        email: _emailController.text,
+        username: _usernameController.text,
         password: _passwordController.text,
       ),
     );

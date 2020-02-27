@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      hintText: Strings.emailHint,
+                      hintText: Strings.usernameHint,
                     ),
                     keyboardType: TextInputType.emailAddress,
                     autovalidate: true,
