@@ -41,15 +41,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield* _mapPasswordChangedToState(event.password);
     } else if (event is LoginWithCredentialsPressed) {
       yield* _mapLoginWithCredentialsPressedToState(
-        email: event.username,
+        username: event.username,
         password: event.password,
       );
     }
   }
 
-  Stream<LoginState> _mapUsernameChangedToState(String email) async* {
+  Stream<LoginState> _mapUsernameChangedToState(String username) async* {
     yield state.update(
-      isEmailValid: Validators.isValidEmail(email),
+      isUsernameValid: Validators.isValidUsername(username),
     );
   }
 
@@ -60,13 +60,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginWithCredentialsPressedToState({
-    String email,
+    String username,
     String password,
   }) async* {
     yield LoginState.loading();
     try {
       final token = await _userRepository.authenticate(
-        username: email,
+        username: username,
         password: password,
       );
       await _userRepository.persistToken(token);
