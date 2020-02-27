@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -25,32 +26,35 @@ class AuthenticationBloc
     if (event is AppStarted) {
       yield* _mapAppStartedToState();
     } else if (event is LoggedIn) {
-      yield* _mapLoggedInToState();
+      yield* _mapLoggedInToState(event.token);
     } else if (event is LoggedOut) {
       yield* _mapLoggedOutToState();
     }
   }
 
   Stream<AuthenticationState> _mapAppStartedToState() async* {
-    try {
-      final isSignedIn = await _userRepository.isSignedIn();
-      if (isSignedIn) {
-        final name = await _userRepository.getUser();
-        yield Authenticated(name);
-      } else {
+    final String token = await _userRepository.getToken();
+
+    if (token != null) {
+      try {
+        User user = await _userRepository.getUser(token);
+        yield Authenticated(user);
+      } catch (_) {
         yield Unauthenticated();
       }
-    } catch (_) {
+    } else {
       yield Unauthenticated();
     }
   }
 
-  Stream<AuthenticationState> _mapLoggedInToState() async* {
-    yield (Authenticated(await _userRepository.getUser()));
+  Stream<AuthenticationState> _mapLoggedInToState(String token) async* {
+    await _userRepository.persistToken(token);
+    User user = await _userRepository.getUser(token);
+    yield (Authenticated(user));
   }
 
   Stream<AuthenticationState> _mapLoggedOutToState() async* {
     yield (Unauthenticated());
-    _userRepository.signOut();
+    await _userRepository.deleteToken();
   }
 }
