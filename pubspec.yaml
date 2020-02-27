@@ -57,6 +57,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/OpenSans-Light.ttf
           weight: 300
+    - family: Stohp
+      fonts:
+        - asset: assets/fonts/Stohp.ttf
   assets:
     - assets/icons/
     - assets/images/
