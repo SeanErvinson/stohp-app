@@ -42,12 +42,12 @@ class StopBloc extends Bloc<StopEvent, StopState> {
 
   Stream<StopState> _mapSendStopRequest(String qrCode) async* {
     _socket.sink.add(jsonEncode({'stop': true}));
-    _socket.sink.close();
-    _wsSubscription?.cancel();
+    _closeSockets();
     yield DisableStop(true);
   }
 
   Stream<StopState> _mapCancelStop() async* {
+    _closeSockets();
     yield StopInitial();
   }
 
@@ -61,5 +61,10 @@ class StopBloc extends Bloc<StopEvent, StopState> {
     } else {
       yield StopScanFailed();
     }
+  }
+
+  void _closeSockets() {
+    _socket.sink.close();
+    _wsSubscription?.cancel();
   }
 }
