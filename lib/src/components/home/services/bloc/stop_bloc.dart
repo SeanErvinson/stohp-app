@@ -62,6 +62,8 @@ class StopBloc extends Bloc<StopEvent, StopState> {
       } else {
         yield StopScanFailed();
       }
+    } on FormatException {
+      yield StopInitial();
     } catch (e) {
       yield StopScanFailed();
     }
