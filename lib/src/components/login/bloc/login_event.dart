@@ -8,16 +8,16 @@ abstract class LoginEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnEmailChanged extends LoginEvent {
-  final String email;
+class OnUsernameChanged extends LoginEvent {
+  final String username;
 
-  const OnEmailChanged({@required this.email});
-
-  @override
-  List<Object> get props => [email];
+  const OnUsernameChanged({@required this.username});
 
   @override
-  String toString() => 'EmailChanged { email :$email }';
+  List<Object> get props => [username];
+
+  @override
+  String toString() => 'UsernameChanged { email :$username }';
 }
 
 class OnPasswordChanged extends LoginEvent {
@@ -33,39 +33,39 @@ class OnPasswordChanged extends LoginEvent {
 }
 
 class OnSumbitted extends LoginEvent {
-  final String email;
+  final String username;
   final String password;
 
   const OnSumbitted({
-    @required this.email,
+    @required this.username,
     @required this.password,
   });
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [username, password];
 
   @override
   String toString() {
-    return 'Submitted { email: $email, password: $password }';
+    return 'Submitted { email: $username, password: $password }';
   }
 }
 
 class LoginWithGooglePressed extends LoginEvent {}
 
 class LoginWithCredentialsPressed extends LoginEvent {
-  final String email;
+  final String username;
   final String password;
 
   const LoginWithCredentialsPressed({
-    @required this.email,
+    @required this.username,
     @required this.password,
   });
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [username, password];
 
   @override
   String toString() {
-    return 'LoginWithCredentialsPressed { email: $email, password: $password }';
+    return 'LoginWithCredentialsPressed { email: $username, password: $password }';
   }
 }

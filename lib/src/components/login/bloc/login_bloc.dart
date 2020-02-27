@@ -22,10 +22,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Stream<LoginState> Function(LoginEvent event) next,
   ) {
     final nonDebounceStream = events.where((event) {
-      return (event is! OnEmailChanged && event is! OnPasswordChanged);
+      return (event is! OnUsernameChanged && event is! OnPasswordChanged);
     });
     final debounceStream = events.where((event) {
-      return (event is OnEmailChanged || event is OnPasswordChanged);
+      return (event is OnUsernameChanged || event is OnPasswordChanged);
     }).debounceTime(Duration(milliseconds: 300));
     return super.transformEvents(
       nonDebounceStream.mergeWith([debounceStream]),
@@ -35,21 +35,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is OnEmailChanged) {
-      yield* _mapEmailChangedToState(event.email);
+    if (event is OnUsernameChanged) {
+      yield* _mapUsernameChangedToState(event.username);
     } else if (event is OnPasswordChanged) {
       yield* _mapPasswordChangedToState(event.password);
-    } else if (event is LoginWithGooglePressed) {
-      yield* _mapLoginWithGooglePressedToState();
     } else if (event is LoginWithCredentialsPressed) {
       yield* _mapLoginWithCredentialsPressedToState(
-        email: event.email,
+        email: event.username,
         password: event.password,
       );
     }
   }
 
-  Stream<LoginState> _mapEmailChangedToState(String email) async* {
+  Stream<LoginState> _mapUsernameChangedToState(String email) async* {
     yield state.update(
       isEmailValid: Validators.isValidEmail(email),
     );
@@ -61,22 +59,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Stream<LoginState> _mapLoginWithGooglePressedToState() async* {
-    try {
-      await _userRepository.signInWithGoogle();
-      yield LoginState.success();
-    } catch (_) {
-      yield LoginState.failure();
-    }
-  }
-
   Stream<LoginState> _mapLoginWithCredentialsPressedToState({
     String email,
     String password,
   }) async* {
     yield LoginState.loading();
     try {
-      await _userRepository.signInWithCredentials(email, password);
+      final token = await _userRepository.authenticate(
+        username: email,
+        password: password,
+      );
+      await _userRepository.persistToken(token);
       yield LoginState.success();
     } catch (_) {
       yield LoginState.failure();
