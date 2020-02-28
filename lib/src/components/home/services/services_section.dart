@@ -15,100 +15,98 @@ class ServicesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        color: Colors.white,
-        elevation: 1,
-        semanticContainer: true,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              CardHeader(
-                title: Strings.servicesHeader,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  BlocBuilder<WakeBloc, WakeState>(
+    return Card(
+      color: Colors.white,
+      elevation: 1,
+      semanticContainer: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CardHeader(
+              title: Strings.servicesHeader,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                BlocBuilder<WakeBloc, WakeState>(
+                  builder: (context, state) {
+                    VoidCallback onClick;
+                    if (state is WakeRunning)
+                      onClick = () => _onConfirmationDialog(context);
+                    else
+                      onClick = () => Navigator.of(context)
+                          .pushNamed("location-destination");
+                    return ServiceButton(
+                      title: Strings.wakeService,
+                      icon: Icons.alarm,
+                      onPressed: onClick,
+                    );
+                  },
+                ),
+                BlocListener<StopBloc, StopState>(
+                  listener: (context, state) {
+                    if (state is StopScanFailed) {
+                      Scaffold.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Container(
+                              height:
+                                  MediaQuery.of(context).size.height * .02,
+                              child: Text(
+                                Strings.scanError,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                    }
+                  },
+                  child: BlocBuilder<StopBloc, StopState>(
                     builder: (context, state) {
-                      VoidCallback onClick;
-                      if (state is WakeRunning)
-                        onClick = () => _onConfirmationDialog(context);
-                      else
-                        onClick = () => Navigator.of(context)
-                            .pushNamed("location-destination");
+                      String label;
+                      IconData icon;
+                      Color backgroundColor;
+                      VoidCallback onPressed;
+                      VoidCallback onLongPressed;
+                      if (state is StopQRCaptured) {
+                        label = Strings.stopService;
+                        backgroundColor = redPrimary;
+                        onLongPressed = () =>
+                            BlocProvider.of<StopBloc>(context)
+                                .add(CancelStop());
+                        onPressed = () => BlocProvider.of<StopBloc>(context)
+                            .add(SendStopRequest(state.qrCode));
+                        icon = Stohp.block;
+                      } else {
+                        label = Strings.scanService;
+                        onPressed = () => BlocProvider.of<StopBloc>(context)
+                            .add(ScanQREvent());
+                        icon = Stohp.scan;
+                      }
                       return ServiceButton(
-                        title: Strings.wakeService,
-                        icon: Icons.alarm,
-                        onPressed: onClick,
+                        title: label,
+                        icon: icon,
+                        onPressed: onPressed,
+                        onLongPressed: onLongPressed,
+                        color: backgroundColor,
                       );
                     },
                   ),
-                  BlocListener<StopBloc, StopState>(
-                    listener: (context, state) {
-                      if (state is StopScanFailed) {
-                        Scaffold.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            SnackBar(
-                              content: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * .02,
-                                child: Text(
-                                  Strings.scanError,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                      }
-                    },
-                    child: BlocBuilder<StopBloc, StopState>(
-                      builder: (context, state) {
-                        String label;
-                        IconData icon;
-                        Color backgroundColor;
-                        VoidCallback onPressed;
-                        VoidCallback onLongPressed;
-                        if (state is StopQRCaptured) {
-                          label = Strings.stopService;
-                          backgroundColor = redPrimary;
-                          onLongPressed = () =>
-                              BlocProvider.of<StopBloc>(context)
-                                  .add(CancelStop());
-                          onPressed = () => BlocProvider.of<StopBloc>(context)
-                              .add(SendStopRequest(state.qrCode));
-                          icon = Stohp.block;
-                        } else {
-                          label = Strings.scanService;
-                          onPressed = () => BlocProvider.of<StopBloc>(context)
-                              .add(ScanQREvent());
-                          icon = Stohp.scan;
-                        }
-                        return ServiceButton(
-                          title: label,
-                          icon: icon,
-                          onPressed: onPressed,
-                          onLongPressed: onLongPressed,
-                          color: backgroundColor,
-                        );
-                      },
-                    ),
-                  ),
-                  ServiceButton(
-                    title: Strings.mapService,
-                    icon: Stohp.map_signs,
-                    onPressed: () => Navigator.pushNamed(context, "navigation"),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                ServiceButton(
+                  title: Strings.mapService,
+                  icon: Stohp.map_signs,
+                  onPressed: () => Navigator.pushNamed(context, "navigation"),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
