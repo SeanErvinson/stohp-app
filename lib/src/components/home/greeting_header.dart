@@ -23,8 +23,8 @@ class GreetingHeader extends StatelessWidget {
         String greetings = Strings.greetingsDefault;
         String assetLeft;
         String assetRight;
-        Color topRightColor;
-        Color botLeftColor;
+        Color topRightColor = Colors.white;
+        Color botLeftColor = Colors.white;
         if (state is GreetMorning) {
           greetings = Strings.greetingsMorning;
           assetLeft = 'assets/images/morning-left.png';
@@ -35,8 +35,8 @@ class GreetingHeader extends StatelessWidget {
           greetings = Strings.greetingsAfternoon;
           assetLeft = 'assets/images/afternoon-left.png';
           assetRight = 'assets/images/afternoon-right.png';
-          topRightColor = darkOrange;
-          botLeftColor = lightOrange;
+          topRightColor = lightOrange;
+          botLeftColor = darkOrange;
         } else if (state is GreetEvening) {
           greetings = Strings.greetingsEvening;
           assetLeft = 'assets/images/evening-left.png';
@@ -73,8 +73,8 @@ class GreetingHeader extends StatelessWidget {
               Positioned(
                   bottom: 0,
                   left: 0,
-                  width: 56,
-                  height: 56,
+                  width: 64,
+                  height: 64,
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(image: AssetImage(assetLeft))),
