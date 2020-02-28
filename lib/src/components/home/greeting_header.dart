@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/bloc/greet_bloc.dart';
+import 'package:stohp/src/components/profile/profile_screen_argument.dart';
 import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/services/api_service.dart';
 import 'package:stohp/src/values/values.dart';
@@ -87,7 +88,8 @@ class GreetingHeader extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () => Navigator.of(context).pushNamed("profile",
+                      arguments: ProfileScreenArguemnt(user: _user)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
