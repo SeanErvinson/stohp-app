@@ -23,7 +23,7 @@ class GreetBloc extends Bloc<GreetEvent, GreetState> {
     int hour = DateTime.now().hour;
     if (hour >= 0 && hour < 12) {
       yield GreetMorning();
-    } else if (hour == 12 && hour > 6) {
+    } else if (hour >= 12 && hour > 18) {
       yield GreetAfternoon();
     } else {
       yield GreetEvening();
