@@ -8,9 +8,9 @@ const Color redSecondary = Color.fromRGBO(240, 66, 45, 1);
 const Color logoPrimary = Color.fromRGBO(211, 61, 61, 1);
 const Color logoSecondary = Color.fromRGBO(238, 115, 115, 1);
 
-const Color eveningColor = Color.fromRGBO(251, 164, 166, 1);
-const Color darkBluePurple = Color.fromRGBO(41, 30, 100, 1);
-const Color darkBlue = Color.fromRGBO(29, 112, 208, 1);
-const Color lightBlue = Color.fromRGBO(139, 183, 254, 1);
-const Color darkOrange = Color.fromRGBO(240, 66, 45, 1);
-const Color lightOrange = Color.fromRGBO(253, 204, 165, 1);
+const Color eveningColor = Color.fromRGBO(102, 109, 137, 1);
+const Color darkEveningPurple = Color.fromRGBO(50, 53, 70, 1);
+const Color darkBlue = Color.fromRGBO(1, 83, 182, 1);
+const Color lightBlue = Color.fromRGBO(105, 184, 241, 1);
+const Color darkOrange = Color.fromRGBO(255, 124, 60, 1);
+const Color lightOrange = Color.fromRGBO(253, 204, 46, 1);
