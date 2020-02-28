@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/bloc/alert_bloc.dart';
+import 'package:stohp/src/components/home/activities/activities_section.dart';
 import 'package:stohp/src/components/home/greeting_header.dart';
 import 'package:stohp/src/components/home/news_stories/news_stories_section.dart';
 import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
@@ -22,12 +23,12 @@ class HomeScreen extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GreetingHeader(user: _user),
                 ServicesSection(),
-                // ActivitiesSection(),
                 NewsStoriesSection(),
+                ActivitiesSection(),
               ],
             ),
             BlocBuilder<WakeBloc, WakeState>(
@@ -43,8 +44,8 @@ class HomeScreen extends StatelessWidget {
                       distance: state.distance,
                     ),
                   );
-                } else {
-                  return Container();
+                }else{
+                  return SizedBox();
                 }
               },
             )
