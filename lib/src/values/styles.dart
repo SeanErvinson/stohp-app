@@ -10,7 +10,7 @@ const TextStyle title = TextStyle(
 
 const TextStyle subtitle = TextStyle(
   fontSize: 14.0,
-  color: Colors.black,
+  color: Colors.white,
   fontWeight: FontWeight.bold,
 );
 
@@ -51,4 +51,42 @@ const TextStyle cardHeader = TextStyle(
 const TextStyle optionButton = TextStyle(
   color: Colors.white,
   fontSize: 14.0,
+);
+
+const TextStyle primaryBaseText = TextStyle(
+  color: Colors.black87,
+  fontSize: 16,
+);
+
+const TextStyle primaryBaseBoldText = TextStyle(
+  color: Colors.black87,
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle primaryAppText = TextStyle(
+  color: colorPrimary,
+  fontSize: 16,
+);
+
+const TextStyle primaryAppBoldText = TextStyle(
+  color: colorPrimary,
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle secondaryAppText = TextStyle(
+  color: colorSecondary,
+  fontSize: 16,
+);
+
+const TextStyle secondaryAppBoldText = TextStyle(
+  color: colorSecondary,
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const TextStyle secondaryBaseText = TextStyle(
+  color: Colors.black54,
+  fontSize: 16,
 );
