@@ -9,6 +9,7 @@ import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
 class PositionDialog extends StatelessWidget {
+  static const double _dialogRadius = 6.0;
   @override
   Widget build(BuildContext context) {
     Completer<GoogleMapController> _controller = Completer();
@@ -28,35 +29,42 @@ class PositionDialog extends StatelessWidget {
             _cameraPosition = CameraPosition(
                 target: LatLng(state.source.lat, state.source.lng), zoom: 14.0);
             return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(_dialogRadius)),
               height: _usabelScreenHeight * .8,
-              color: Colors.white,
               child: Column(
                 children: <Widget>[
                   Container(
                     height: _usabelScreenHeight * .40,
-                    child: GoogleMap(
-                      mapType: MapType.normal,
-                      minMaxZoomPreference: MinMaxZoomPreference(14.0, 18.0),
-                      rotateGesturesEnabled: false,
-                      myLocationEnabled: true,
-                      tiltGesturesEnabled: false,
-                      markers: Set<Marker>()
-                        ..add(Marker(
-                            markerId: MarkerId('Destination'),
-                            position: LatLng(
-                                state.destination.lat, state.destination.lng))),
-                      polylines: Set<Polyline>()
-                        ..add(Polyline(
-                          polylineId: PolylineId("line"),
-                          points: state.polylineCoordinates,
-                          endCap: Cap.roundCap,
-                          startCap: Cap.roundCap,
-                          color: bluePrimary,
-                        )),
-                      initialCameraPosition: _cameraPosition,
-                      onMapCreated: (GoogleMapController controller) {
-                        _controller.complete(controller);
-                      },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(_dialogRadius),
+                          topRight: Radius.circular(_dialogRadius)),
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        minMaxZoomPreference: MinMaxZoomPreference(14.0, 18.0),
+                        rotateGesturesEnabled: false,
+                        myLocationEnabled: true,
+                        tiltGesturesEnabled: false,
+                        markers: Set<Marker>()
+                          ..add(Marker(
+                              markerId: MarkerId('Destination'),
+                              position: LatLng(state.destination.lat,
+                                  state.destination.lng))),
+                        polylines: Set<Polyline>()
+                          ..add(Polyline(
+                            polylineId: PolylineId("line"),
+                            points: state.polylineCoordinates,
+                            endCap: Cap.roundCap,
+                            startCap: Cap.roundCap,
+                            color: bluePrimary,
+                          )),
+                        initialCameraPosition: _cameraPosition,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                      ),
                     ),
                   ),
                   Flexible(
