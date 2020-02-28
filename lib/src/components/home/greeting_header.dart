@@ -89,7 +89,7 @@ class GreetingHeader extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: InkWell(
                   onTap: () => Navigator.of(context).pushNamed("profile",
-                      arguments: ProfileScreenArguemnt(user: _user)),
+                      arguments: UserArgument(user: _user)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(

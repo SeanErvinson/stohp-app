@@ -1,7 +1,7 @@
 import 'package:stohp/src/models/user.dart';
 
-class ProfileScreenArguemnt {
+class UserArgument {
   final User user;
 
-  ProfileScreenArguemnt({this.user});
+  UserArgument({this.user});
 }
