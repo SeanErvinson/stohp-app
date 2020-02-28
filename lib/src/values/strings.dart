@@ -8,6 +8,7 @@ class Strings {
   static const String cancel = "Cancel";
   static const String location = "Enter location";
   static const String login = "Log In";
+  static const String logout = "Log out";
   static const String signup = "Sign Up";
   static const String googleLogin = "Log In with Google";
   static const String usernameHint = "Username";
@@ -31,4 +32,14 @@ class Strings {
   static const String greetingsMorning = "Good Morning ";
   static const String greetingsAfternoon = "Good Afternoon ";
   static const String greetingsEvening = "Good Evening ";
+  static const String profile = "Profile";
+  static const String accountSettings = "Account Settings";
+  static const String logoutConfirmation = "Are you sure you want to logout";
+  static const String personalInfo = "Personal Info";
+  static const String personalInfoHeader = "Edit personal info";
+  static const String save = "Save";
+  static const String firstName = "First name";
+  static const String lastName = "Last name";
+  static const String email = "Email";
+  static const String editProfile = "Edit Profile";
 }
