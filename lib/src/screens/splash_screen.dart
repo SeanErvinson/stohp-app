@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [logoSecondary, logoPrimary])),
+                      colors: [colorSecondary, colorPrimary])),
             ),
           ],
         ),

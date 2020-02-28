@@ -158,7 +158,7 @@ class LogInButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.0),
         ),
-        color: logoSecondary,
+        color: colorSecondary,
         onPressed: _onPressed,
         child: Text(
           Strings.login,

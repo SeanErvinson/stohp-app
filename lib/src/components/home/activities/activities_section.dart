@@ -17,7 +17,7 @@ class ActivitiesSection extends StatelessWidget {
     return Flexible(
       flex: 1,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.only(top: 4),
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -16,7 +16,7 @@ class ArticleTile extends StatelessWidget {
       width: 148.0,
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        color: bgSecondary,
+        color: bgPrimary,
         child: Column(
           children: <Widget>[
             AspectRatio(
