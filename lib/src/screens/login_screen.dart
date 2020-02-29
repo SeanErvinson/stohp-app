@@ -17,26 +17,28 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(48),
+          child: AppBar(
+            titleSpacing: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+              color: Colors.black87,
+            ),
+            title: Text(
+              Strings.login,
+              style: TextStyle(color: Colors.black87, fontSize: 14),
+            ),
+          ),
+        ),
         body: BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(userRepository: _userRepository),
           child: Column(
             children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
-                      iconSize: 20,
-                      color: Colors.black54,
-                    ),
-                    Text(
-                      Strings.login,
-                      style: navigationDarkTitle,
-                    ),
-                  ],
-                ),
-              ),
               LoginForm(),
             ],
           ),
