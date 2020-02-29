@@ -51,21 +51,43 @@ class ProfileScreen extends StatelessWidget {
                       Strings.accountSettings,
                       style: TextStyle(fontSize: 12, color: Colors.black54),
                     ),
+                    Divider(),
                     ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(Strings.personalInfo),
-                        trailing: Icon(
-                          Stohp.user,
-                          size: 16,
-                          color: Colors.black54,
-                        ),
-                        onTap: () => Navigator.of(context).pushNamed(
-                            "personal-info",
-                            arguments: UserArgument(user: user))),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(Strings.personalInfo),
+                      trailing: Icon(
+                        Stohp.user,
+                        size: 16,
+                        color: Colors.black54,
+                      ),
+                      onTap: () => Navigator.of(context).pushNamed(
+                          "personal-info",
+                          arguments: UserArgument(user: user)),
+                    ),
+                    Divider(),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(Strings.notifications),
+                      onChanged: (value) {},
+                      value: true,
+                      activeColor: colorSecondary,
+                    ),
                     Flexible(
                       flex: 1,
                       child: Container(),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      title: Text(Strings.privacyPolicy),
+                      trailing: Icon(
+                        Icons.lock,
+                        size: 16,
+                        color: Colors.black54,
+                      ),
+                      onTap: () {},
                     ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
@@ -81,6 +103,20 @@ class ProfileScreen extends StatelessWidget {
                         builder: (context) {
                           return _buildLogoutConfirmationDialog(context);
                         },
+                      ),
+                    ),
+                    Center(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: Strings.appName,
+                          style:
+                              TextStyle(fontSize: 10.0, color: Colors.black87),
+                          children: [
+                            TextSpan(text: "\n"),
+                            TextSpan(text: Strings.version),
+                          ],
+                        ),
                       ),
                     ),
                   ],
