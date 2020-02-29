@@ -42,4 +42,11 @@ class Strings {
   static const String lastName = "Last name";
   static const String email = "Email";
   static const String editProfile = "Edit Profile";
+  static const String viewFinder = "View Finder";
+  static const String back = "Back";
+  static const String about = "About";
+  static const String version = "Version 1.0.0";
+  static const String privacyPolicy = "Privacy policy";
+  static const String notifications = "Notifications";
+  static const String credit = "SeanErvinson";
 }
