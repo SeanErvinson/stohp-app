@@ -53,8 +53,7 @@ class ServicesSection extends StatelessWidget {
                         ..showSnackBar(
                           SnackBar(
                             content: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * .02,
+                              height: MediaQuery.of(context).size.height * .02,
                               child: Text(
                                 Strings.scanError,
                                 style: TextStyle(
@@ -77,9 +76,8 @@ class ServicesSection extends StatelessWidget {
                       if (state is StopQRCaptured) {
                         label = Strings.stopService;
                         backgroundColor = redPrimary;
-                        onLongPressed = () =>
-                            BlocProvider.of<StopBloc>(context)
-                                .add(CancelStop());
+                        onLongPressed = () => BlocProvider.of<StopBloc>(context)
+                            .add(CancelStop());
                         onPressed = () => BlocProvider.of<StopBloc>(context)
                             .add(SendStopRequest(state.qrCode));
                         icon = Stohp.block;
@@ -102,7 +100,7 @@ class ServicesSection extends StatelessWidget {
                 ServiceButton(
                   title: Strings.mapService,
                   icon: Stohp.map_signs,
-                  onPressed: () => Navigator.pushNamed(context, "navigation"),
+                  onPressed: () => Navigator.pushNamed(context, "view-finder"),
                 ),
               ],
             ),
