@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/values/values.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final UserRepository _userRepository;
-
-  WelcomeScreen({Key key, @required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository,
-        super(key: key);
+  static const String _backgroundImage = "assets/images/background.jpg";
+  static const String _foregroundImage =
+      "assets/icons/logo-banner-foreground.png";
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +19,13 @@ class WelcomeScreen extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/background.jpg"),
+                  image: AssetImage(_backgroundImage),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             Positioned(
-                child: Image.asset(
-                  "assets/icons/logo-banner-foreground.png",
-                  width: _logoSize,
-                ),
+                child: Image.asset(_foregroundImage, width: _logoSize),
                 top: _usableScreenHeight * .1,
                 left: (_usableScreenWidth * .5) - (_logoSize * .5)),
             Positioned(
@@ -45,11 +38,23 @@ class WelcomeScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Flexible(flex: 1, child: LoginButton()),
+                        Flexible(
+                            flex: 1,
+                            child: CredentialButton(
+                              title: Strings.login,
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, "login"),
+                            )),
                         SizedBox(
                           width: 32.0,
                         ),
-                        Flexible(flex: 1, child: SignUpButton()),
+                        Flexible(
+                            flex: 1,
+                            child: CredentialButton(
+                              title: Strings.register,
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, "registration"),
+                            )),
                       ],
                     ),
                   ],
@@ -63,47 +68,29 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-class SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        color: Color.fromRGBO(194, 194, 194, .45),
-        child: Text(
-          Strings.signup,
-          textAlign: TextAlign.center,
-          style: navigationTitle,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, "registration");
-        },
-      ),
-    );
-  }
-}
+class CredentialButton extends StatelessWidget {
+  final String _title;
+  final VoidCallback _onPressed;
 
-class LoginButton extends StatelessWidget {
+  const CredentialButton({Key key, String title, VoidCallback onPressed})
+      : this._onPressed = onPressed,
+        this._title = title,
+        super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        color: Color.fromRGBO(194, 194, 194, .45),
-        onPressed: () {
-          Navigator.pushNamed(context, "login");
-        },
-        child: Text(
-          Strings.login,
-          style: navigationTitle,
-        ),
-      ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          color: Color.fromRGBO(40, 40, 40, .70),
+          child: Text(
+            _title,
+            textAlign: TextAlign.center,
+            style: navigationTitle,
+          ),
+          onPressed: _onPressed),
     );
   }
 }
