@@ -49,4 +49,11 @@ class Strings {
   static const String privacyPolicy = "Privacy policy";
   static const String notifications = "Notifications";
   static const String credit = "SeanErvinson";
+  static const String personalInfoSuccess = "Successfully updated!";
+  static const String personalInfoFail =
+      "Something went wrong! Please try again later.";
+  static const String loginFailed = "Failed to login. Please try again!";
+  static const String loginLoading = "Logging you in!";
+  static const String registerFailed = "Failed to register. Please try again!";
+  static const String registerLoading = "Hold up getting things ready.";
 }
