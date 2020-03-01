@@ -56,4 +56,6 @@ class Strings {
   static const String loginLoading = "Logging you in!";
   static const String registerFailed = "Failed to register. Please try again!";
   static const String registerLoading = "Hold up getting things ready.";
+  static const String usernameWarning = "Invalid username";
+  static const String passwordWarning = "Invalid password";
 }
