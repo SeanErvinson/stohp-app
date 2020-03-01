@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:stohp/src/components/profile/edit_profile.dart';
+import 'package:stohp/src/components/profile/profile_picture.dart';
 import 'package:stohp/src/models/user.dart';
-import 'package:stohp/src/services/api_service.dart';
-import 'package:stohp/src/values/values.dart';
+
+import 'bloc/profile_picture_bloc.dart';
 
 class ProfileHeader extends StatelessWidget {
-  static const String _defaultProfilePic =
-      "assets/images/default-profile-pic.png";
   final User _user;
 
   const ProfileHeader({
@@ -16,6 +16,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _profilePictireBloc = ProfilePictureBloc();
     return Container(
       padding: EdgeInsets.only(bottom: 8.0),
       child: Row(
@@ -23,12 +24,8 @@ class ProfileHeader extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-            child: CircleAvatar(
-              maxRadius: 28,
-              backgroundImage: _user.profile.avatar != null
-                  ? NetworkImage(ApiService.baseUrl + _user.profile.avatar)
-                  : AssetImage(_defaultProfilePic),
-            ),
+            child: ProfilePicture(
+                profilePictireBloc: _profilePictireBloc, user: _user),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -42,25 +39,14 @@ class ProfileHeader extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
-                  Strings.editProfile,
-                  style: TextStyle(
-                    color: bluePrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              )
+              EditProfile(profilePictireBloc: _profilePictireBloc),
             ],
           ),
         ],
       ),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: Colors.black12)),
-          boxShadow: []),
+        border: Border(bottom: BorderSide(width: 1, color: Colors.black12)),
+      ),
     );
   }
 }
