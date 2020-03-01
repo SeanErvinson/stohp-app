@@ -62,9 +62,7 @@ class StohpApp extends StatelessWidget {
           ),
         ),
         routes: {
-          "welcome": (context) => WelcomeScreen(
-                userRepository: _userRepository,
-              ),
+          "welcome": (context) => WelcomeScreen(),
           "login": (context) => LoginScreen(
                 userRepository: _userRepository,
               ),
@@ -81,10 +79,10 @@ class StohpApp extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
           if (state is Uninitialized) {
-            return WelcomeScreen(userRepository: _userRepository);
+            return WelcomeScreen();
           }
           if (state is Unauthenticated) {
-            return WelcomeScreen(userRepository: _userRepository);
+            return WelcomeScreen();
           }
           if (state is Authenticated) {
             return BlocProvider<GreetBloc>(
