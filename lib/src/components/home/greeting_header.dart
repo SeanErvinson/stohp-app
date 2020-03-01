@@ -64,7 +64,7 @@ class GreetingHeader extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle,
                     children: [
                       TextSpan(
-                        text: _user.username,
+                        text: _user.firstName,
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                     ],
