@@ -158,7 +158,7 @@ class ServiceButton extends StatelessWidget {
         this._onPressed = onPressed,
         this._icon = icon,
         this._onLongPressed = onLongPressed ?? null,
-        this._color = color ?? darkBlue,
+        this._color = color ?? bluePrimary,
         super(key: key);
 
   @override

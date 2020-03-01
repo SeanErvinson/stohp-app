@@ -43,7 +43,7 @@ const TextStyle activityInfo = TextStyle(
 );
 
 const TextStyle cardHeader = TextStyle(
-  color: darkBlue,
+  color: bluePrimary,
   fontWeight: FontWeight.bold,
   fontSize: 14.0,
 );
