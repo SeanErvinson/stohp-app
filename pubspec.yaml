@@ -22,6 +22,7 @@ dependencies:
   barcode_scan: ^2.0.1
   web_socket_channel: ^1.1.0
   image_picker: ^0.6.3+4
+  webview_flutter: ^0.3.19+8
   # Hardware
   flutter_ringtone_player: ^2.0.0
   vibration: ^1.2.2
