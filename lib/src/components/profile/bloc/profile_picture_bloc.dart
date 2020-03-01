@@ -29,16 +29,23 @@ class ProfilePictureBloc
 
   Stream<ProfilePictureState> _mapPickImage() async* {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    add(UploadImage(image));
+    if (image != null) {
+      yield ProfilePictureUploading();
+      add(UploadImage(image));
+    } else {
+      yield ProfilePictureFailed();
+    }
   }
 
   Stream<ProfilePictureState> _mapUploadImage(File imageFile) async* {
     var filename = path.basename(imageFile.path);
     var base64Image = base64Encode(await imageFile.readAsBytes());
-    // yield ProfilePictureUploading();
-    // yield ProfilePictureSuccess();
-    // yield ProfilePictureFailed();
-    // UserRepository _userRepository = UserRepository();
-    // _userRepository.uploadAvatar(filename, base64Image);
+    UserRepository _userRepository = UserRepository();
+    String avatarUrl =
+        await _userRepository.uploadAvatar(filename, base64Image);
+    if (avatarUrl != null)
+      yield ProfilePictureSuccess(avatarUrl);
+    else
+      yield ProfilePictureFailed();
   }
 }
