@@ -39,10 +39,18 @@ class _LoginFormState extends State<LoginForm> {
             ..showSnackBar(
               SnackBar(
                 content: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('Login Failure'), Icon(Icons.error)],
+                  children: [
+                    Text(
+                      Strings.loginFailed,
+                      style: TextStyle(fontSize: 14.0),
+                    ),
+                    Icon(Icons.error, size: 20.0)
+                  ],
                 ),
-                backgroundColor: Colors.red,
+                backgroundColor: redPrimary,
               ),
             );
         }
@@ -54,7 +62,8 @@ class _LoginFormState extends State<LoginForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Logging In...'),
+                    Text(Strings.loginLoading,
+                        style: TextStyle(fontSize: 14.0)),
                     CircularProgressIndicator(),
                   ],
                 ),

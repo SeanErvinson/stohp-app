@@ -42,7 +42,10 @@ class _RegisterFormState extends State<RegisterForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Registering...'),
+                    Text(
+                      Strings.registerLoading,
+                      style: TextStyle(fontSize: 14.0),
+                    ),
                     CircularProgressIndicator(),
                   ],
                 ),
@@ -61,11 +64,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Registration Failure'),
-                    Icon(Icons.error),
+                    Text(
+                      Strings.registerFailed,
+                      style: TextStyle(fontSize: 14.0),
+                    ),
+                    Icon(Icons.error, size: 20.0),
                   ],
                 ),
-                backgroundColor: Colors.red,
+                backgroundColor: redPrimary,
               ),
             );
         }
