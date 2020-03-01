@@ -87,7 +87,8 @@ class ProfileScreen extends StatelessWidget {
                         size: 16,
                         color: Colors.black54,
                       ),
-                      onTap: () {},
+                      onTap: () =>
+                          Navigator.of(context).pushNamed("privacy-policy"),
                     ),
                     ListTile(
                       contentPadding: EdgeInsets.zero,

@@ -75,6 +75,7 @@ class StohpApp extends StatelessWidget {
           "personal-info": (context) => ProfilePersonalInfoScreen(),
           "view-finder": (context) => ViewFinderScreen(),
           "location-destination": (context) => LocationDestinationScreen(),
+          "privacy-policy": (context) => PrivacyPolicyScreen(),
         },
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
             builder: (context, state) {
