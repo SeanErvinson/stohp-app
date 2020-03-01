@@ -30,24 +30,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: Column(
-          children: <Widget>[
-            PersonalInfoForm(user: user),
-            Expanded(child: SizedBox()),
-            Container(
-              padding: EdgeInsets.all(8.0),
-              width: double.infinity,
-              child: FlatButton(
-                child: Text(
-                  Strings.save,
-                  style: TextStyle(fontSize: 14.0, color: Colors.white),
-                ),
-                color: colorSecondary,
-                onPressed: () {},
-              ),
-            ),
-          ],
-        ),
+        body: PersonalInfoForm(user: user),
       ),
     );
   }
