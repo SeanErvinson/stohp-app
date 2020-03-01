@@ -21,15 +21,15 @@ class User {
       this.profile});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json["user"]['id'];
-    username = json["user"]['username'];
-    email = json["user"]['email'];
-    firstName = json["user"]['first_name'];
-    lastName = json["user"]['last_name'];
-    isDriver = json["user"]['is_driver'];
-    isCommuter = json["user"]['is_commuter'];
-    profile = json["user"]['profile'] != null
-        ? new Profile.fromJson(json["user"]['profile'])
+    id = json['id'];
+    username = json['username'];
+    email = json['email'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    isDriver = json['is_driver'];
+    isCommuter = json['is_commuter'];
+    profile = json['profile'] != null
+        ? new Profile.fromJson(json['profile'])
         : null;
   }
 
