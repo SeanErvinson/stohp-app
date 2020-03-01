@@ -9,13 +9,14 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   LoginBloc _loginBloc;
 
   bool get isPopulated =>
-      _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _usernameController.text.isNotEmpty &&
+      _passwordController.text.isNotEmpty;
 
   bool isLoginButtonEnabled(LoginState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -25,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     super.initState();
     _loginBloc = BlocProvider.of<LoginBloc>(context);
-    _emailController.addListener(_onEmailChanged);
+    _usernameController.addListener(_onUsernameChanged);
     _passwordController.addListener(_onPasswordChanged);
   }
 
@@ -83,15 +84,17 @@ class _LoginFormState extends State<LoginForm> {
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    controller: _emailController,
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       hintText: Strings.usernameHint,
                     ),
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     autovalidate: true,
                     autocorrect: false,
                     validator: (_) {
-                      return !state.isUsernameValid ? 'Invalid Email' : null;
+                      return !state.isUsernameValid
+                          ? Strings.usernameWarning
+                          : null;
                     },
                   ),
                   TextFormField(
@@ -103,7 +106,9 @@ class _LoginFormState extends State<LoginForm> {
                     autovalidate: true,
                     autocorrect: false,
                     validator: (_) {
-                      return !state.isPasswordValid ? 'Invalid Password' : null;
+                      return !state.isPasswordValid
+                          ? Strings.passwordWarning
+                          : null;
                     },
                   ),
                   Padding(
@@ -124,14 +129,14 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _onEmailChanged() {
+  void _onUsernameChanged() {
     _loginBloc.add(
-      OnUsernameChanged(username: _emailController.text),
+      OnUsernameChanged(username: _usernameController.text),
     );
   }
 
@@ -144,7 +149,7 @@ class _LoginFormState extends State<LoginForm> {
   void _onFormSubmitted() {
     _loginBloc.add(
       LoginWithCredentialsPressed(
-        username: _emailController.text,
+        username: _usernameController.text,
         password: _passwordController.text,
       ),
     );

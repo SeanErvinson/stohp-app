@@ -17,7 +17,7 @@ class OnUsernameChanged extends LoginEvent {
   List<Object> get props => [username];
 
   @override
-  String toString() => 'UsernameChanged { email :$username }';
+  String toString() => 'UsernameChanged { Username :$username }';
 }
 
 class OnPasswordChanged extends LoginEvent {
@@ -46,7 +46,7 @@ class OnSumbitted extends LoginEvent {
 
   @override
   String toString() {
-    return 'Submitted { email: $username, password: $password }';
+    return 'Submitted { username: $username, password: $password }';
   }
 }
 
@@ -66,6 +66,6 @@ class LoginWithCredentialsPressed extends LoginEvent {
 
   @override
   String toString() {
-    return 'LoginWithCredentialsPressed { email: $username, password: $password }';
+    return 'LoginWithCredentialsPressed { username: $username, password: $password }';
   }
 }

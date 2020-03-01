@@ -92,7 +92,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     autocorrect: false,
                     autovalidate: true,
                     validator: (_) {
-                      return !state.isUsernameValid ? 'Invalid Username' : null;
+                      return !state.isUsernameValid
+                          ? Strings.usernameWarning
+                          : null;
                     },
                   ),
                   TextFormField(
@@ -104,7 +106,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     autocorrect: false,
                     autovalidate: true,
                     validator: (_) {
-                      return !state.isPasswordValid ? 'Invalid Password' : null;
+                      return !state.isPasswordValid
+                          ? Strings.passwordWarning
+                          : null;
                     },
                   ),
                   Padding(

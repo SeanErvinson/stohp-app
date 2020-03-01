@@ -6,8 +6,8 @@ class Validators {
     r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
   );
 
-  static isValidUsername(String email) {
-    return _usernameRegExp.hasMatch(email);
+  static isValidUsername(String username) {
+    return _usernameRegExp.hasMatch(username);
   }
 
   static isValidPassword(String password) {
