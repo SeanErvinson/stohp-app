@@ -83,7 +83,7 @@ class UserRepository {
 
   Future<bool> verifyStopCode(String stopCode) async {
     String url =
-        "${ApiService.baseUrl}/api/v1/users/verify-stop-code/$stopCode";
+        "${ApiService.baseUrl}/api/v1/users/verify-stop-code/$stopCode/";
     var token = await getToken();
     var response = await http.get(url, headers: {
       'Content-Type': 'application/json',
@@ -94,5 +94,26 @@ class UserRepository {
       return true;
     }
     return false;
+  }
+
+  Future<String> uploadAvatar(String filename, String base64Image) async {
+    String url = "${ApiService.baseUrl}/api/v1/users/upload/";
+    Map body = {
+      "avatar": base64Image,
+    };
+    var token = await getToken();
+    var response = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Token $token',
+        },
+        body: jsonEncode(body));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      return data["avatar"];
+    } else {
+      return null;
+    }
   }
 }
