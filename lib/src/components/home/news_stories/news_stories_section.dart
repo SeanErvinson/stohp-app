@@ -38,7 +38,11 @@ class NewsStoriesSection extends StatelessWidget {
                       return Center(child: CircularProgressIndicator());
                     default:
                       if (snapshot.hasError) return Container();
-                      return ListView.builder(
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1),
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: false,
                         scrollDirection: Axis.horizontal,
                         itemCount:
                             snapshot.data != null ? snapshot.data.length : 0,
