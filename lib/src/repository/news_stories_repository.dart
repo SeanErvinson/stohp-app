@@ -1,44 +1,36 @@
+import 'dart:convert';
+
 import 'package:stohp/src/models/article.dart';
+import 'package:http/http.dart' as http;
+import 'package:stohp/src/services/api_service.dart';
 
 class NewsStoriesRepository {
-  List<Article> dummyArticles = [
-    Article(
-      id: "4",
-      content: "Walang Pasok #walangpasok",
-      title: "Walang Pasok #walangpasok",
-      image:
-          "https://newsinfo.inquirer.net/files/2016/08/Walang-Pasok-e1468162230394-620x391-620x391.jpg",
-    ),
-    Article(
-      id: "1",
-      content: "Heavy rainfall this afternoon",
-      image:
-          "https://hhsmedia.com/wp-content/uploads/2019/06/rain-3964186_960_720.jpg",
-      title: "Heavy rainfall this afternoon",
-    ),
-    Article(
-        id: "2",
-        content: "Coronavirus death toll increases.",
-        image:
-            "https://upload.wikimedia.org/wikipedia/commons/7/78/Coronaviruses_004_lores.jpg",
-        title: "Coronavirus death toll increases."),
-    Article(
-      id: "3",
-      content: "Government warns of potential terrorist attacks",
-      title: "Government warns of potential terrorist attacks",
-      image:
-          "https://cdn.cfr.org/sites/default/files/styles/article_header_l_16x9_600px/public/image/2018/02/Somalia-al-Shabaab-Africa-militant-terrorist.jpg",
-    ),
-  ];
   Future<List<Article>> fetchArticles({int limit = 5}) async {
-    return dummyArticles;
+    String url = "${ApiService.baseUrl}/api/v1/news-stories/";
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      Iterable results = jsonData["results"];
+      List<Article> articles =
+          results.map((model) => Article.fromJson(model)).toList();
+      return articles;
+    }
+    return null;
   }
 
-  Future<Article> fetchArticle(String id) async {
-    for (var article in dummyArticles) {
-      if (article.id == id) {
-        return article;
-      }
+  Future<Article> fetchArticle(String slug) async {
+    String url = "${ApiService.baseUrl}/api/v1/news-stories/$slug";
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var article = Article.fromJson(jsonData);
+      return article;
     }
     return null;
   }

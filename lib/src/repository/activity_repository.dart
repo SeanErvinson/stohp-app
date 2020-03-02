@@ -1,30 +1,45 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 import 'package:stohp/src/models/activity.dart';
+import 'package:stohp/src/repository/user_repository.dart';
+import 'package:stohp/src/services/api_service.dart';
 
 class ActivityRepository {
-  List<Activity> dummyActivities = [
-    Activity(
-        createdOn: DateTime.now(), id: "1", title: "Technohub", userId: "1"),
-    Activity(createdOn: DateTime.now(), id: "2", title: "UST", userId: "1"),
-    Activity(
-        createdOn: DateTime.now(), id: "3", title: "La Salle", userId: "1"),
-    Activity(
-        createdOn: DateTime.now(),
-        id: "4",
-        title: "1622 Sisa Street Sampaloc",
-        userId: "1"),
-    Activity(
-        createdOn: DateTime.now(),
-        id: "5",
-        title: "432 Dapitan Street Manila",
-        userId: "1")
-  ];
+  final UserRepository _userRepository;
+
+  ActivityRepository({UserRepository userRepository})
+      : this._userRepository = userRepository;
   Future<List<Activity>> fetchActivities({limit = 5}) async {
-    return dummyActivities;
+    var token = await _userRepository.getToken();
+    String url = "${ApiService.baseUrl}/api/v1/activities/";
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Token $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      Iterable results = jsonData["results"];
+      var activities =
+          results.map((model) => Activity.fromJson(model)).toList();
+      return activities;
+    }
+    return null;
   }
 
   Future<Activity> fetchActivity(String id) async {
-    for (var activity in dummyActivities) {
-      if (activity.id == id) return activity;
+    var token = await _userRepository.getToken();
+    String url = "${ApiService.baseUrl}/api/v1/activities/$id";
+    var response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Token $token',
+    });
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      return Activity.fromJson(jsonData);
     }
     return null;
   }
