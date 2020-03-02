@@ -31,6 +31,8 @@ class ArticleTile extends StatelessWidget {
               child: Text(
                 currentArticle.title,
                 style: TextStyle(fontSize: 12),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
               ),
             ),
           ],
