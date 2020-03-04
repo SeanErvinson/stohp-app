@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stohp/src/components/common/bloc/alert_bloc.dart';
 import 'package:stohp/src/components/home/activities/activities_section.dart';
 import 'package:stohp/src/components/home/greeting_header.dart';
 import 'package:stohp/src/components/home/news_stories/news_stories_section.dart';
@@ -23,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 GreetingHeader(user: _user),
                 ServicesSection(),
@@ -35,9 +34,6 @@ class HomeScreen extends StatelessWidget {
               bloc: BlocProvider.of<WakeBloc>(context),
               builder: (context, state) {
                 if (state is WakeRunning) {
-                  if (state.distance.distanceInValue < 50) {
-                    BlocProvider.of<AlertBloc>(context).add(TriggerAlert());
-                  }
                   return Positioned(
                     bottom: 0,
                     child: TravelStatusBar(
