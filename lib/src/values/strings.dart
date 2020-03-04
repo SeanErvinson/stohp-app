@@ -49,8 +49,8 @@ class Strings {
   static const String privacyPolicy = "Privacy policy";
   static const String notifications = "Notifications";
   static const String credit = "SeanErvinson";
-  static const String personalInfoSuccess = "Successfully updated!";
-  static const String personalInfoFail =
+  static const String updateSuccess = "Successfully updated!";
+  static const String updateFailed =
       "Something went wrong! Please try again later.";
   static const String loginFailed = "Failed to login. Please try again!";
   static const String loginLoading = "Logging you in!";
@@ -62,4 +62,5 @@ class Strings {
   static const String wakeDialogInstruction2 =
       "Time to wake up. You're almost near!";
   static const String wakeConfirmation = "I'm awake!";
+  static const String gender = "Gender";
 }
