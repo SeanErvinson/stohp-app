@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:stohp/src/models/personal_info.dart';
 import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/repository/user_repository.dart';
 
@@ -17,17 +18,18 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     PersonalInfoEvent event,
   ) async* {
     if (event is SavePersonalInfo) {
-      yield* _mapSavePersonalInfo(event.user);
+      yield* _mapSavePersonalInfo(event.personalInfo);
     }
   }
 
-  Stream<PersonalInfoState> _mapSavePersonalInfo(User user) async* {
+  Stream<PersonalInfoState> _mapSavePersonalInfo(
+      PersonalInfo personalInfo) async* {
     yield PersonalInfoSaving();
-    User updatedUser = await _userRepository.updatePersonalInfo(user);
+    User updatedUser = await _userRepository.updatePersonalInfo(personalInfo);
     if (updatedUser != null) {
       yield PersonalInfoSuccess(updatedUser);
     } else {
-      yield PersonalInfoFailed(user);
+      yield PersonalInfoFailed(updatedUser);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:stohp/src/models/personal_info.dart';
 import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/services/api_service.dart';
 import 'package:stohp/src/services/app_exception.dart';
@@ -117,14 +118,8 @@ class UserRepository {
     }
   }
 
-  Future<User> updatePersonalInfo(User user) async {
-    String url = "${ApiService.baseUrl}/api/v1/users/${user.id}/";
-    Map body = {
-      "username": user.username,
-      "first_name": user.firstName,
-      "last_name": user.lastName,
-      "email": user.email
-    };
+  Future<User> updatePersonalInfo(PersonalInfo personalInfo) async {
+    String url = "${ApiService.baseUrl}/api/v1/users/${personalInfo.id}/";
     var token = await getToken();
     var response = await http.put(url,
         headers: {
@@ -132,11 +127,11 @@ class UserRepository {
           'Accept': 'application/json',
           'Authorization': 'Token $token',
         },
-        body: jsonEncode(body));
+        body: jsonEncode(personalInfo.toJson()));
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      var user = User.fromJson(jsonData);
-      return user;
+      var resultUser = User.fromJson(jsonData);
+      return resultUser;
     } else {
       return null;
     }

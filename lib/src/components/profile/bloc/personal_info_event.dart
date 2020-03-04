@@ -4,7 +4,7 @@ part of 'personal_info_bloc.dart';
 abstract class PersonalInfoEvent {}
 
 class SavePersonalInfo extends PersonalInfoEvent {
-  final User user;
+  final PersonalInfo personalInfo;
 
-  SavePersonalInfo(this.user);
+  SavePersonalInfo(this.personalInfo);
 }
