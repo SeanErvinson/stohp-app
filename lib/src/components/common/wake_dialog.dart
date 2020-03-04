@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
 import 'package:stohp/src/values/values.dart';
 
 import 'bloc/dialog_bloc.dart';
 
 class WakeDialog extends StatelessWidget {
-  final DialogBloc _bloc;
-
-  const WakeDialog({Key key, DialogBloc bloc})
-      : _bloc = bloc,
-        super(key: key);
+  const WakeDialog({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final WakeBloc _wakeBloc = BlocProvider.of<WakeBloc>(context);
+    final DialogBloc _dialogBloc = BlocProvider.of<DialogBloc>(context);
     return Dialog(
       elevation: 0.0,
       backgroundColor: Colors.transparent,
@@ -20,7 +20,8 @@ class WakeDialog extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).pop();
-          _bloc.add(HideDialog());
+          _dialogBloc.add(HideDialog());
+          _wakeBloc.add(CancelTracking());
         },
         child: Container(
           padding: EdgeInsets.all(16.0),
