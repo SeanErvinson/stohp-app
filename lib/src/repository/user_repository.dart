@@ -71,9 +71,9 @@ class UserRepository {
             'Accept': 'application/json',
           },
           body: jsonEncode(body));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         var jsonData = jsonDecode(response.body);
-        var user = User.fromJson(jsonData["user"]);
+        var user = User.fromJson(jsonData);
         return user;
       }
       throw BadRequestException(response.body.toString());
