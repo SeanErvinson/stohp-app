@@ -14,6 +14,7 @@ class GenderType {
 
   static List<GenderType> getGenders() {
     return <GenderType>[
+      GenderType(0, "Select gender", null),
       GenderType(1, "Male", "M"),
       GenderType(2, "Female", "F"),
       GenderType(3, "Others", "O")
