@@ -71,6 +71,7 @@ class ProfileScreen extends StatelessWidget {
                     ProfileListTile(
                       title: Strings.logout,
                       icon: Icons.exit_to_app,
+                      iconColor: colorSecondary,
                       onPressed: () => showDialog(
                         context: context,
                         builder: (context) {
