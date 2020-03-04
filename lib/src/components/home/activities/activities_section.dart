@@ -16,7 +16,7 @@ class ActivitiesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserRepository _userRepository = UserRepository();
     ActivityRepository _activityRepository =
-        new ActivityRepository(userRepository: _userRepository);
+        ActivityRepository(userRepository: _userRepository);
     return Flexible(
       flex: 1,
       child: Container(
