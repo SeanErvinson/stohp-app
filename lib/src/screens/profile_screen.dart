@@ -4,6 +4,7 @@ import 'package:stohp/src/components/common/bloc/authentication_bloc.dart';
 import 'package:stohp/src/components/common/stohp_icons.dart';
 import 'package:stohp/src/components/profile/profile_header.dart';
 import 'package:stohp/src/components/profile/profile_screen_argument.dart';
+import 'package:stohp/src/components/profile/profile_tile.dart';
 import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/values/values.dart';
 
@@ -51,46 +52,26 @@ class ProfileScreen extends StatelessWidget {
                       Strings.accountSettings,
                       style: TextStyle(fontSize: 12, color: Colors.black54),
                     ),
-                    Divider(),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(Strings.personalInfo),
-                      trailing: Icon(
-                        Stohp.user,
-                        size: 16,
-                        color: Colors.black54,
-                      ),
-                      onTap: () => Navigator.of(context).pushNamed(
+                    ProfileListTile(
+                      title: Strings.personalInfo,
+                      icon: Stohp.user,
+                      onPressed: () => Navigator.of(context).pushNamed(
                           "personal-info",
                           arguments: UserArgument(user: user)),
                     ),
-                    Flexible(
-                      flex: 1,
-                      child: Container(),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(Strings.privacyPolicy),
-                      trailing: Icon(
-                        Icons.lock,
-                        size: 16,
-                        color: Colors.black54,
-                      ),
-                      onTap: () =>
+                    Divider(height: 1),
+                    Spacer(),
+                    ProfileListTile(
+                      title: Strings.privacyPolicy,
+                      icon: Icons.lock,
+                      onPressed: () =>
                           Navigator.of(context).pushNamed("privacy-policy"),
                     ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(Strings.logout),
-                      trailing: Icon(
-                        Icons.exit_to_app,
-                        size: 24,
-                        color: colorSecondary,
-                      ),
-                      onTap: () => showDialog(
+                    Divider(height: 1),
+                    ProfileListTile(
+                      title: Strings.logout,
+                      icon: Icons.exit_to_app,
+                      onPressed: () => showDialog(
                         context: context,
                         builder: (context) {
                           return _buildLogoutConfirmationDialog(context);
