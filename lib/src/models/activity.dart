@@ -1,24 +1,28 @@
+import 'package:stohp/src/models/user.dart';
+
 class Activity {
-  String id;
-  String userId;
-  String title;
+  int id;
+  User user;
+  String name;
   DateTime createdOn;
 
-  Activity({this.id, this.userId, this.title, this.createdOn});
+  Activity({this.id, this.user, this.name, this.createdOn});
 
   Activity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['userId'];
-    title = json['title'];
-    createdOn = json['createdOn'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    name = json['name'];
+    createdOn = DateTime.parse(json['created_on']).toLocal();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['title'] = this.title;
-    data['createdOn'] = this.createdOn;
+    if (this.user != null) {
+      data['user'] = this.user.toJson();
+    }
+    data['name'] = this.name;
+    data['created_on'] = this.createdOn;
     return data;
   }
 }
