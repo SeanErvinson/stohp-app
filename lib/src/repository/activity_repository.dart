@@ -43,4 +43,22 @@ class ActivityRepository {
     }
     return null;
   }
+
+  Future<Activity> addActivity(Activity newActivity) async {
+    var token = await _userRepository.getToken();
+    String url = "${ApiService.baseUrl}/api/v1/activities/";
+    Map body = newActivity.toJson();
+    var response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Token $token',
+        },
+        body: jsonEncode(body));
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      return Activity.fromJson(jsonData);
+    }
+    return null;
+  }
 }
