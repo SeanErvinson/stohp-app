@@ -4,6 +4,7 @@ import 'package:stohp/src/components/common/card_header.dart';
 import 'package:stohp/src/components/home/activities/activity_tile.dart';
 import 'package:stohp/src/models/activity.dart';
 import 'package:stohp/src/repository/activity_repository.dart';
+import 'package:stohp/src/repository/user_repository.dart';
 import 'package:stohp/src/values/values.dart';
 
 class ActivitiesSection extends StatelessWidget {
@@ -13,7 +14,9 @@ class ActivitiesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActivityRepository _activityRepository = new ActivityRepository();
+    final UserRepository _userRepository = UserRepository();
+    ActivityRepository _activityRepository =
+        new ActivityRepository(userRepository: _userRepository);
     return Flexible(
       flex: 1,
       child: Container(
@@ -48,10 +51,10 @@ class ActivitiesSection extends StatelessWidget {
                             Activity currentActivity = snapshot.data[index];
                             return ActivityTile(
                                 date: formatDate(
-                                    currentActivity.createdOn, [d, '/', mm]),
+                                    currentActivity.createdOn, [M, '. ', dd]),
                                 time: formatDate(currentActivity.createdOn,
                                     [h, ":", nn, am]),
-                                title: currentActivity.title);
+                                title: currentActivity.name);
                           },
                         );
                     }
