@@ -18,7 +18,9 @@ class ActivityTile extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle,
+            style: primaryBaseText.copyWith(
+              fontSize: 12.0,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
           Column(
