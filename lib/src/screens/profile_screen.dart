@@ -65,15 +65,6 @@ class ProfileScreen extends StatelessWidget {
                           "personal-info",
                           arguments: UserArgument(user: user)),
                     ),
-                    Divider(),
-                    SwitchListTile(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      title: Text(Strings.notifications),
-                      onChanged: (value) {},
-                      value: true,
-                      activeColor: colorSecondary,
-                    ),
                     Flexible(
                       flex: 1,
                       child: Container(),
