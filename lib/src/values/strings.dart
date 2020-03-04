@@ -58,4 +58,9 @@ class Strings {
   static const String registerLoading = "Hold up getting things ready.";
   static const String usernameWarning = "Invalid username";
   static const String passwordWarning = "Invalid password";
+  static const String wakeDialogInstruction1 = "Rise and shine";
+  static const String wakeDialogInstruction2 =
+      "Time to wake up. You're almost near!";
+  static const String wakeDialogInstruction3 =
+      "Click anywhere to dismiss window";
 }
