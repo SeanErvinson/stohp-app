@@ -13,7 +13,10 @@ class Strings {
   static const String googleLogin = "Log In with Google";
   static const String usernameHint = "Username";
   static const String passwordHint = "Password";
-  static const String register = "Register";
+  static const String firstNameHint = "First Name";
+  static const String lastNameHint = "Last Name";
+  static const String emailHint = "Email";
+  static const String register = "Create new account";
   static const String newsStoriesHeader = "News & Stories";
   static const String servicesHeader = "Services";
   static const String wakeService = "Wake";
@@ -56,6 +59,9 @@ class Strings {
   static const String loginLoading = "Logging you in!";
   static const String registerFailed = "Failed to register. Please try again!";
   static const String registerLoading = "Hold up getting things ready.";
+  static const String emailWarning = "Invalid email";
+  static const String firstNameWarning = "First name required";
+  static const String lastNameWarning = "Last name required";
   static const String usernameWarning = "Invalid username";
   static const String passwordWarning = "Invalid password";
   static const String wakeDialogInstruction1 = "Rise and shine";
