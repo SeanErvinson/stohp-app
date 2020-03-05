@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:stohp/src/models/personal_info.dart';
+import 'package:stohp/src/models/register_info.dart';
 import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/services/api_service.dart';
 import 'package:stohp/src/services/app_exception.dart';
@@ -57,20 +58,15 @@ class UserRepository {
     return null;
   }
 
-  Future<User> registerUser(String username, String password) async {
+  Future<User> registerUser(RegisterInfo registerInfo) async {
     String url = "${ApiService.baseUrl}/api/v1/users/";
-    Map body = {
-      "username": username,
-      "password": password,
-      "is_commuter": true,
-    };
     try {
       var response = await http.post(url,
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
-          body: jsonEncode(body));
+          body: jsonEncode(registerInfo.toJson()));
       if (response.statusCode == 201) {
         var jsonData = jsonDecode(response.body);
         var user = User.fromJson(jsonData);
