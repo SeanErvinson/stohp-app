@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stohp/src/components/common/bloc/authentication_bloc.dart';
 import 'package:stohp/src/components/register/bloc/bloc.dart';
+import 'package:stohp/src/models/register_info.dart';
 import 'package:stohp/src/values/values.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -11,12 +12,18 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   RegisterBloc _registerBloc;
 
   bool get isPopulated =>
       _usernameController.text.isNotEmpty &&
-      _passwordController.text.isNotEmpty;
+      _passwordController.text.isNotEmpty &&
+      _firstNameController.text.isNotEmpty &&
+      _lastNameController.text.isNotEmpty &&
+      _emailController.text.isNotEmpty;
 
   bool isRegisterButtonEnabled(RegisterState state) {
     return state.isFormValid && isPopulated && !state.isSubmitting;
@@ -28,6 +35,9 @@ class _RegisterFormState extends State<RegisterForm> {
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
     _usernameController.addListener(_onUsernameChanged);
     _passwordController.addListener(_onPasswordChanged);
+    _firstNameController.addListener(_onFirstNameChanged);
+    _lastNameController.addListener(_onLastNameChanged);
+    _emailController.addListener(_onEmailChanged);
   }
 
   @override
@@ -78,15 +88,71 @@ class _RegisterFormState extends State<RegisterForm> {
       },
       child: BlocBuilder<RegisterBloc, RegisterState>(
         builder: (context, state) {
-          return Padding(
+          return Container(
+            width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Form(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 1,
+                        child: TextFormField(
+                          maxLines: 1,
+                          controller: _firstNameController,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 8.0),
+                            hintText: Strings.firstNameHint,
+                            errorStyle: TextStyle(fontSize: 12.0),
+                          ),
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          autovalidate: true,
+                          validator: (_) {
+                            return !state.isFirstNameValid
+                                ? Strings.firstNameWarning
+                                : null;
+                          },
+                        ),
+                      ),
+                      VerticalDivider(
+                        color: Colors.red,
+                        width: 8,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: TextFormField(
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 8.0),
+                            hintText: Strings.lastNameHint,
+                            errorStyle: TextStyle(fontSize: 12.0),
+                          ),
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          autovalidate: true,
+                          validator: (_) {
+                            return !state.isLastNameValid
+                                ? Strings.lastNameWarning
+                                : null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                       hintText: Strings.usernameHint,
+                      errorStyle: TextStyle(fontSize: 12.0),
                     ),
                     keyboardType: TextInputType.text,
                     autocorrect: false,
@@ -98,9 +164,27 @@ class _RegisterFormState extends State<RegisterForm> {
                     },
                   ),
                   TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                      hintText: Strings.emailHint,
+                      errorStyle: TextStyle(fontSize: 12.0),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    autovalidate: true,
+                    validator: (_) {
+                      return !state.isEmailValid ? Strings.emailWarning : null;
+                    },
+                  ),
+                  TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                       hintText: Strings.passwordHint,
+                      errorStyle: TextStyle(fontSize: 12.0),
                     ),
                     obscureText: true,
                     autocorrect: false,
@@ -132,12 +216,33 @@ class _RegisterFormState extends State<RegisterForm> {
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   void _onUsernameChanged() {
     _registerBloc.add(
       OnUsernameChanged(username: _usernameController.text),
+    );
+  }
+
+  void _onFirstNameChanged() {
+    _registerBloc.add(
+      OnFirstNameChanged(firstName: _firstNameController.text),
+    );
+  }
+
+  void _onLastNameChanged() {
+    _registerBloc.add(
+      OnLastNameChanged(lastName: _lastNameController.text),
+    );
+  }
+
+  void _onEmailChanged() {
+    _registerBloc.add(
+      OnEmailChanged(email: _emailController.text),
     );
   }
 
@@ -148,11 +253,14 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _onFormSubmitted() {
+    RegisterInfo registerInfo = RegisterInfo();
+    registerInfo.username = _usernameController.text;
+    registerInfo.password = _passwordController.text;
+    registerInfo.firstName = _firstNameController.text;
+    registerInfo.lastName = _lastNameController.text;
+    registerInfo.email = _emailController.text;
     _registerBloc.add(
-      OnSubmitted(
-        username: _usernameController.text,
-        password: _passwordController.text,
-      ),
+      OnSubmitted(userInfo: registerInfo),
     );
   }
 }

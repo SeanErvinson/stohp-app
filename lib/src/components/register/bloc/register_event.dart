@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:stohp/src/models/register_info.dart';
 
 abstract class RegisterEvent extends Equatable {
   const RegisterEvent();
@@ -32,20 +33,52 @@ class OnPasswordChanged extends RegisterEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
-class OnSubmitted extends RegisterEvent {
-  final String username;
-  final String password;
+class OnFirstNameChanged extends RegisterEvent {
+  final String firstName;
 
-  const OnSubmitted({
-    @required this.username,
-    @required this.password,
-  });
+  const OnFirstNameChanged({@required this.firstName});
 
   @override
-  List<Object> get props => [username, password];
+  List<Object> get props => [firstName];
+
+  @override
+  String toString() => 'FirstNameChanged { firstname: $firstName }';
+}
+
+class OnLastNameChanged extends RegisterEvent {
+  final String lastName;
+
+  const OnLastNameChanged({@required this.lastName});
+
+  @override
+  List<Object> get props => [lastName];
+
+  @override
+  String toString() => 'lastnameChanged { lastname: $lastName }';
+}
+
+class OnEmailChanged extends RegisterEvent {
+  final String email;
+
+  const OnEmailChanged({@required this.email});
+
+  @override
+  List<Object> get props => [email];
+
+  @override
+  String toString() => 'EmailChanged { Email: $email }';
+}
+
+class OnSubmitted extends RegisterEvent {
+  final RegisterInfo userInfo;
+
+  const OnSubmitted({@required this.userInfo});
+
+  @override
+  List<Object> get props => [userInfo];
 
   @override
   String toString() {
-    return 'Submitted { username: $username, password: $password }';
+    return 'Submitted { username: ${userInfo.username}, password: ${userInfo.password} }';
   }
 }
