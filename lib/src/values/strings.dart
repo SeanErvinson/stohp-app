@@ -18,6 +18,7 @@ class Strings {
   static const String emailHint = "Email";
   static const String register = "Register";
   static const String registerHeader = "Create new account";
+  static const String loginHeader = "Welcome back";
   static const String newsStoriesHeader = "News & Stories";
   static const String servicesHeader = "Services";
   static const String wakeService = "Wake";
