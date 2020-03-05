@@ -7,6 +7,7 @@ import 'package:stohp/src/values/values.dart';
 
 class RegistrationScreen extends StatelessWidget {
   final UserRepository _userRepository;
+  static const double appBarHeight = 48.0;
 
   RegistrationScreen({Key key, @required UserRepository userRepository})
       : assert(userRepository != null),
@@ -15,6 +16,8 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _usableScreenHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -29,18 +32,33 @@ class RegistrationScreen extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               color: Colors.black87,
             ),
-            title: Text(
-              Strings.register,
-              style: TextStyle(color: Colors.black87, fontSize: 14),
-            ),
           ),
         ),
-        body: BlocProvider<RegisterBloc>(
-          create: (context) => RegisterBloc(userRepository: _userRepository),
-          child: Column(
-            children: <Widget>[
-              RegisterForm(),
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height -
+                appBarHeight -
+                MediaQuery.of(context).padding.top,
+            child: BlocProvider<RegisterBloc>(
+              create: (context) =>
+                  RegisterBloc(userRepository: _userRepository),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: _usableScreenHeight * .15,
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      Strings.register,
+                      style: TextStyle(
+                          color: colorSecondary,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ),
+                  RegisterForm()
+                ],
+              ),
+            ),
           ),
         ),
       ),
