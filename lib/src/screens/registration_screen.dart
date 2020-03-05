@@ -48,7 +48,7 @@ class RegistrationScreen extends StatelessWidget {
                     height: _usableScreenHeight * .15,
                     alignment: Alignment.topCenter,
                     child: Text(
-                      Strings.register,
+                      Strings.registerHeader,
                       style: TextStyle(
                           color: colorSecondary,
                           fontSize: 24.0,

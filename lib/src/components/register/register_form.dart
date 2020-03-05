@@ -96,104 +96,126 @@ class _RegisterFormState extends State<RegisterForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        flex: 1,
-                        child: TextFormField(
-                          maxLines: 1,
-                          controller: _firstNameController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 8.0),
-                            hintText: Strings.firstNameHint,
-                            errorStyle: TextStyle(fontSize: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 8.0),
+                              hintText: Strings.firstNameHint,
+                              hintStyle: TextStyle(fontSize: 14.0),
+                              errorStyle: TextStyle(fontSize: 12.0),
+                            ),
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            autovalidate: true,
+                            validator: (_) {
+                              return !state.isFirstNameValid
+                                  ? Strings.firstNameWarning
+                                  : null;
+                            },
                           ),
-                          keyboardType: TextInputType.text,
-                          autocorrect: false,
-                          autovalidate: true,
-                          validator: (_) {
-                            return !state.isFirstNameValid
-                                ? Strings.firstNameWarning
-                                : null;
-                          },
                         ),
-                      ),
-                      VerticalDivider(
-                        color: Colors.red,
-                        width: 8,
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: TextFormField(
-                          controller: _lastNameController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 8.0),
-                            hintText: Strings.lastNameHint,
-                            errorStyle: TextStyle(fontSize: 12.0),
+                        VerticalDivider(
+                          width: 16,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 8.0),
+                              hintText: Strings.lastNameHint,
+                              hintStyle: TextStyle(fontSize: 14.0),
+                              errorStyle: TextStyle(fontSize: 12.0),
+                            ),
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                            autovalidate: true,
+                            validator: (_) {
+                              return !state.isLastNameValid
+                                  ? Strings.lastNameWarning
+                                  : null;
+                            },
                           ),
-                          keyboardType: TextInputType.text,
-                          autocorrect: false,
-                          autovalidate: true,
-                          validator: (_) {
-                            return !state.isLastNameValid
-                                ? Strings.lastNameWarning
-                                : null;
-                          },
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      maxLines: 1,
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        hintText: Strings.usernameHint,
+                        hintStyle: TextStyle(fontSize: 14.0),
+                        errorStyle: TextStyle(fontSize: 12.0),
                       ),
-                    ],
-                  ),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                      hintText: Strings.usernameHint,
-                      errorStyle: TextStyle(fontSize: 12.0),
+                      keyboardType: TextInputType.text,
+                      autocorrect: false,
+                      autovalidate: true,
+                      validator: (_) {
+                        return !state.isUsernameValid
+                            ? Strings.usernameWarning
+                            : null;
+                      },
                     ),
-                    keyboardType: TextInputType.text,
-                    autocorrect: false,
-                    autovalidate: true,
-                    validator: (_) {
-                      return !state.isUsernameValid
-                          ? Strings.usernameWarning
-                          : null;
-                    },
                   ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                      hintText: Strings.emailHint,
-                      errorStyle: TextStyle(fontSize: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      maxLines: 1,
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        hintText: Strings.emailHint,
+                        hintStyle: TextStyle(fontSize: 14.0),
+                        errorStyle: TextStyle(fontSize: 12.0),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      autovalidate: true,
+                      validator: (_) {
+                        return !state.isEmailValid
+                            ? Strings.emailWarning
+                            : null;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    autovalidate: true,
-                    validator: (_) {
-                      return !state.isEmailValid ? Strings.emailWarning : null;
-                    },
                   ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                      hintText: Strings.passwordHint,
-                      errorStyle: TextStyle(fontSize: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      maxLines: 1,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        hintText: Strings.passwordHint,
+                        hintStyle: TextStyle(fontSize: 14.0),
+                        errorStyle: TextStyle(fontSize: 12.0),
+                      ),
+                      obscureText: true,
+                      autocorrect: false,
+                      autovalidate: true,
+                      validator: (_) {
+                        return !state.isPasswordValid
+                            ? Strings.passwordWarning
+                            : null;
+                      },
                     ),
-                    obscureText: true,
-                    autocorrect: false,
-                    autovalidate: true,
-                    validator: (_) {
-                      return !state.isPasswordValid
-                          ? Strings.passwordWarning
-                          : null;
-                    },
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),

@@ -16,7 +16,8 @@ class Strings {
   static const String firstNameHint = "First Name";
   static const String lastNameHint = "Last Name";
   static const String emailHint = "Email";
-  static const String register = "Create new account";
+  static const String register = "Register";
+  static const String registerHeader = "Create new account";
   static const String newsStoriesHeader = "News & Stories";
   static const String servicesHeader = "Services";
   static const String wakeService = "Wake";
