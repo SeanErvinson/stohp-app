@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_animations/simple_animations.dart';
 import 'package:stohp/src/values/values.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -40,20 +41,26 @@ class WelcomeScreen extends StatelessWidget {
                       children: <Widget>[
                         Flexible(
                             flex: 1,
-                            child: CredentialButton(
-                              title: Strings.login,
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, "login"),
+                            child: FadeIn(
+                              2,
+                              CredentialButton(
+                                title: Strings.login,
+                                onPressed: () =>
+                                    Navigator.pushNamed(context, "login"),
+                              ),
                             )),
                         SizedBox(
                           width: 32.0,
                         ),
                         Flexible(
                             flex: 1,
-                            child: CredentialButton(
-                              title: Strings.register,
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, "registration"),
+                            child: FadeIn(
+                              2.5,
+                              CredentialButton(
+                                title: Strings.register,
+                                onPressed: () => Navigator.pushNamed(
+                                    context, "registration"),
+                              ),
                             )),
                       ],
                     ),
@@ -63,6 +70,36 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class FadeIn extends StatelessWidget {
+  final double delay;
+  final Widget child;
+
+  FadeIn(this.delay, this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    final tween = MultiTrackTween([
+      Track("opacity")
+          .add(Duration(milliseconds: 500), Tween(begin: 0.0, end: 1.0)),
+      Track("translateY").add(
+          Duration(milliseconds: 500), Tween(begin: 24.0, end: 0.0),
+          curve: Curves.easeOut)
+    ]);
+
+    return ControlledAnimation(
+      delay: Duration(milliseconds: (300 * delay).round()),
+      duration: tween.duration,
+      tween: tween,
+      child: child,
+      builderWithChild: (context, child, animation) => Opacity(
+        opacity: animation["opacity"],
+        child: Transform.translate(
+            offset: Offset(0, animation["translateY"]), child: child),
       ),
     );
   }
