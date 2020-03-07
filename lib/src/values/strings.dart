@@ -23,7 +23,7 @@ class Strings {
   static const String servicesHeader = "Services";
   static const String wakeService = "Wake";
   static const String stopService = "Para";
-  static const String mapService = "View";
+  static const String mapService = "Oversight";
   static const String close = "Close";
   static const String scanService = "Scan";
   static const String scanError = "Invalid code!";
