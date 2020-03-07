@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
@@ -15,41 +18,39 @@ part 'oversight_event.dart';
 part 'oversight_state.dart';
 
 class OversightBloc extends Bloc<OversightEvent, OversightState> {
+  CommuterOversightInfo _commuterOversightInfo;
   Map<MarkerId, Marker> markers = {};
+
   Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
   IOWebSocketChannel _driverCommuterSocket;
   IOWebSocketChannel _commuterDriverSocket;
 
   StreamSubscription _userLocationSubscription;
-
   StreamSubscription _driverCommuterSocketSubscription;
-  StreamSubscription _commuterDriverSocketSubscription;
 
   final StreamController<Map<MarkerId, Marker>> _markersController =
       StreamController<Map<MarkerId, Marker>>();
 
   Stream<Map<MarkerId, Marker>> get outMarkers => _markersController.stream;
 
-  static const String _iconCarEmptyAsset = 'assets/icons/car-full.png';
+  static const String _iconCarSpaceAsset = 'assets/icons/car-full.png';
   static const String _iconCarFullAsset = 'assets/icons/car-space.png';
-  BitmapDescriptor pinCarEmptyIcon;
-  BitmapDescriptor pinCarFullIcon;
+  Uint8List pinCarSpaceIcon;
+  Uint8List pinCarFullIcon;
 
-  OversightBloc(DriverOversightInfo driverOversightInfo) {
-    if (pinCarEmptyIcon == null) {
-      BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(devicePixelRatio: 2.5), _iconCarEmptyAsset)
-          .then((onValue) {
-        pinCarEmptyIcon = onValue;
-      });
-    }
-    if (pinCarFullIcon == null) {
-      BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(devicePixelRatio: 2.5), _iconCarFullAsset)
-          .then((onValue) {
-        pinCarFullIcon = onValue;
-      });
-    }
+  OversightBloc(CommuterOversightInfo commuterOversightInfo) {
+    _commuterOversightInfo = commuterOversightInfo;
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 
   @override
@@ -71,6 +72,8 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
   }
 
   Stream<OversightState> _mapConnectRoom() async* {
+    pinCarFullIcon = await getBytesFromAsset(_iconCarFullAsset, 64);
+    pinCarSpaceIcon = await getBytesFromAsset(_iconCarSpaceAsset, 64);
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     yield OversightUpdate(position);
@@ -85,12 +88,18 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
     _driverCommuterSocketSubscription =
         _driverCommuterSocket.stream.listen((value) {
       Map jsonData = jsonDecode(value);
-      var commuter = DriverOversightInfo.fromJson(jsonData["dc_info"]);
-      if (jsonData["action"] == "disconnect")
-        _removeMarker(commuter.id);
-      else
-        add(UpdateDriverPosition(commuter));
+      _parseDriverData(jsonData);
     });
+  }
+
+  void _parseDriverData(Map jsonData) {
+    if (jsonData["dc_info"] == null) return;
+    var driver = DriverOversightInfo.fromJson(jsonData["dc_info"]);
+    if (jsonData["action"] == "disconnect") {
+      _removeMarker(driver.id);
+      return;
+    }
+    add(UpdateDriverPosition(driver));
   }
 
   Stream<OversightState> _mapUpdateDriverPosition(
@@ -100,7 +109,6 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
   }
 
   Stream<OversightState> _mapUpdateCommuterPosition(Position position) async* {
-    CommuterOversightInfo _commuterOversightInfo = CommuterOversightInfo();
     _commuterOversightInfo.lat = position.latitude;
     _commuterOversightInfo.lng = position.longitude;
     Map commuterData = {
@@ -112,8 +120,19 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
     yield OversightUpdate(position);
   }
 
+  void _sendDisconnectRequest() {
+    Map commuterData = {
+      "cd_info": {
+        "id": _commuterOversightInfo.id,
+      },
+      "action": "disconnect",
+    };
+    var jsonData = jsonEncode(commuterData);
+    _commuterDriverSocket.sink.add(jsonData);
+  }
+
   Stream<OversightState> _mapDisconnectRoom() async* {
-    // Send disconnect
+    _sendDisconnectRequest();
     _closeSockets();
     yield OversightInitial();
   }
@@ -122,17 +141,22 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
     final MarkerId _markerId = MarkerId(driverInfo.id.toString());
     markers.update(_markerId, (marker) {
       return marker.copyWith(
+          iconParam: !driverInfo.isFull
+              ? BitmapDescriptor.fromBytes(pinCarFullIcon)
+              : BitmapDescriptor.fromBytes(pinCarSpaceIcon),
           positionParam: LatLng(driverInfo.lat, driverInfo.lng));
     }, ifAbsent: () {
       return Marker(
-        draggable: false,
-        markerId: _markerId,
-        position: LatLng(driverInfo.lat, driverInfo.lng),
-        infoWindow: InfoWindow(
-          title: driverInfo.route,
-        ),
-        icon: driverInfo.isFull ? pinCarFullIcon : pinCarEmptyIcon,
-      );
+          draggable: false,
+          markerId: _markerId,
+          flat: true,
+          position: LatLng(driverInfo.lat, driverInfo.lng),
+          infoWindow: InfoWindow(
+            title: driverInfo.route,
+          ),
+          icon: !driverInfo.isFull
+              ? BitmapDescriptor.fromBytes(pinCarFullIcon)
+              : BitmapDescriptor.fromBytes(pinCarSpaceIcon));
     });
   }
 
@@ -149,11 +173,10 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
   }
 
   void _closeSockets() {
-    _driverCommuterSocket.sink.close();
-    _commuterDriverSocket.sink.close();
+    _driverCommuterSocket.sink?.close();
+    _commuterDriverSocket.sink?.close();
     _userLocationSubscription?.cancel();
     _driverCommuterSocketSubscription?.cancel();
-    _commuterDriverSocketSubscription?.cancel();
-    _markersController.close();
+    _markersController?.close();
   }
 }
