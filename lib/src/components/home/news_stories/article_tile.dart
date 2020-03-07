@@ -15,6 +15,7 @@ class ArticleTile extends StatelessWidget {
     return Container(
       width: 148.0,
       child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         color: bgPrimary,
         child: Column(
@@ -26,10 +27,12 @@ class ArticleTile extends StatelessWidget {
                 child: Image.network(currentArticle.image),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(6.0),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.all(12.0),
               child: Text(
                 currentArticle.title,
+                textScaleFactor: 1.15,
                 style: TextStyle(fontSize: 12),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
