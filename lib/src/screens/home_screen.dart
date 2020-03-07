@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 GreetingHeader(user: _user),
-                ServicesSection(),
+                ServicesSection(user: _user),
                 NewsStoriesSection(),
                 ActivitiesSection(),
               ],

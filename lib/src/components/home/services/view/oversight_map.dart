@@ -7,21 +7,28 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bloc/oversight_bloc.dart';
 
 class OversightMap extends StatefulWidget {
+  final OversightBloc _bloc;
+
+  const OversightMap({Key key, OversightBloc bloc})
+      : this._bloc = bloc,
+        super(key: key);
   @override
-  _OversightMapState createState() => _OversightMapState();
+  _OversightMapState createState() => _OversightMapState(_bloc);
 }
 
 class _OversightMapState extends State<OversightMap>
     with WidgetsBindingObserver {
+  final OversightBloc bloc;
   Completer<GoogleMapController> _mapController = Completer();
 
+  _OversightMapState(this.bloc);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OversightBloc, OversightState>(
-      bloc: BlocProvider.of<OversightBloc>(context),
+      bloc: bloc,
       builder: (context, state) {
         return StreamBuilder(
-          stream: BlocProvider.of<OversightBloc>(context).outMarkers,
+          stream: bloc.outMarkers,
           builder: (context, snapshot) {
             CameraPosition cameraPosition = _setInitialCamera(LatLng(12, 104));
             if (state is OversightUpdate) {
@@ -51,12 +58,14 @@ class _OversightMapState extends State<OversightMap>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    bloc.add(ConnectRoom());
   }
 
   @override
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    bloc.close();
   }
 
   @override

@@ -4,14 +4,19 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:stohp/src/components/common/card_header.dart';
 import 'package:stohp/src/components/common/stohp_icons.dart';
 import 'package:stohp/src/components/home/services/bloc/wake_bloc.dart';
+import 'package:stohp/src/components/profile/profile_screen_argument.dart';
+import 'package:stohp/src/models/user.dart';
 import 'package:stohp/src/values/values.dart';
 
 import 'bloc/stop_bloc.dart';
 
 class ServicesSection extends StatelessWidget {
+  final User _user;
   const ServicesSection({
     Key key,
-  }) : super(key: key);
+    User user,
+  })  : this._user = user,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +105,8 @@ class ServicesSection extends StatelessWidget {
                 ServiceButton(
                   title: Strings.mapService,
                   icon: Stohp.map_signs,
-                  onPressed: () => Navigator.pushNamed(context, "oversight"),
+                  onPressed: () => Navigator.pushNamed(context, "oversight",
+                      arguments: UserArgument(user: _user)),
                 ),
               ],
             ),
