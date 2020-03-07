@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ViewFinderScreen extends StatelessWidget {
+class OversightMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+
+    );
   }
 }

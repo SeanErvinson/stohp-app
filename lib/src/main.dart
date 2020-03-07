@@ -87,7 +87,7 @@ class StohpApp extends StatelessWidget {
         "profile": (context) => ProfileScreen(),
         "home": (context) => HomeScreen(),
         "personal-info": (context) => ProfilePersonalInfoScreen(),
-        "view-finder": (context) => ViewFinderScreen(),
+        "oversight": (context) => OversightMapScreen(),
         "location-destination": (context) => LocationDestinationScreen(),
         "privacy-policy": (context) => PrivacyPolicyScreen(),
       },

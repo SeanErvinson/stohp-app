@@ -5,5 +5,5 @@ export 'home_screen.dart';
 export 'login_screen.dart';
 export 'location_destination_screen.dart';
 export 'profile_personal_info_screen.dart';
-export 'view_finder_screen.dart';
+export 'oversight_map_screen.dart';
 export 'privacy_policy_screen.dart';

@@ -100,7 +100,7 @@ class ServicesSection extends StatelessWidget {
                 ServiceButton(
                   title: Strings.mapService,
                   icon: Stohp.map_signs,
-                  onPressed: () => Navigator.pushNamed(context, "view-finder"),
+                  onPressed: () => Navigator.pushNamed(context, "oversight"),
                 ),
               ],
             ),
