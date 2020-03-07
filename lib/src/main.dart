@@ -59,6 +59,10 @@ class StohpApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    precacheImage(AssetImage("assets/images/background.jpg"), context);
+    precacheImage(AssetImage("assets/images/default-profile-pic.png"), context);
+    precacheImage(
+        AssetImage("assets/icons/logo-banner-foreground.png"), context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Stohp',
