@@ -153,6 +153,7 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
           position: LatLng(driverInfo.lat, driverInfo.lng),
           infoWindow: InfoWindow(
             title: driverInfo.route,
+            snippet: driverInfo.vehicleType,
           ),
           icon: !driverInfo.isFull
               ? BitmapDescriptor.fromBytes(pinCarFullIcon)
