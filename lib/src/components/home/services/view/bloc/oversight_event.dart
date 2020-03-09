@@ -5,6 +5,12 @@ abstract class OversightEvent {}
 
 class ConnectRoom extends OversightEvent {}
 
+class UpdateFilter extends OversightEvent {
+  final OversightFilter filter;
+
+  UpdateFilter(this.filter);
+}
+
 class UpdateDriverPosition extends OversightEvent {
   final DriverOversightInfo driverInfo;
 

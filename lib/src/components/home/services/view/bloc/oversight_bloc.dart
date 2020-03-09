@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:stohp/src/models/commuter_oversight_info.dart';
 import 'package:stohp/src/models/driver_oversight_info.dart';
+import 'package:stohp/src/models/oversight_filter.dart';
 import 'package:stohp/src/services/api_service.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -66,6 +67,8 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
       yield* _mapUpdateDriverPosition(event.driverInfo);
     } else if (event is UpdateCommuterPosition) {
       yield* _mapUpdateCommuterPosition(event.position);
+    } else if (event is UpdateFilter) {
+      yield* _mapUpdateFilter(event.filter);
     } else if (event is DisconnectRoom) {
       yield* _mapDisconnectRoom();
     }
@@ -102,6 +105,12 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
     add(UpdateDriverPosition(driver));
   }
 
+  Stream<OversightState> _mapUpdateFilter(OversightFilter filter) async* {
+    if (filter == null) return;
+    _commuterOversightInfo.vehicleType = filter.vehicleType;
+    _commuterOversightInfo.route = filter.route;
+  }
+
   Stream<OversightState> _mapUpdateDriverPosition(
       DriverOversightInfo driverPosition) async* {
     _createUpdateMarker(driverPosition);
@@ -128,17 +137,28 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
       "action": "disconnect",
     };
     var jsonData = jsonEncode(commuterData);
-    _commuterDriverSocket.sink.add(jsonData);
+    _commuterDriverSocket.sink?.add(jsonData);
   }
 
   Stream<OversightState> _mapDisconnectRoom() async* {
     _sendDisconnectRequest();
-    _closeSockets();
     yield OversightInitial();
   }
 
   void _createUpdateMarker(DriverOversightInfo driverInfo) {
     final MarkerId _markerId = MarkerId(driverInfo.id.toString());
+    if (driverInfo.vehicleType != _commuterOversightInfo.vehicleType &&
+        _commuterOversightInfo.vehicleType != null) {
+      _removeMarker(driverInfo.id);
+      return;
+    }
+    if (_commuterOversightInfo.route != null &&
+        !driverInfo.route
+            .toLowerCase()
+            .contains(_commuterOversightInfo.route.toLowerCase())) {
+      _removeMarker(driverInfo.id);
+      return;
+    }
     markers.update(_markerId, (marker) {
       return marker.copyWith(
           iconParam: !driverInfo.isFull
@@ -175,9 +195,9 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
 
   void _closeSockets() {
     _driverCommuterSocket.sink?.close();
-    _commuterDriverSocket.sink?.close();
     _userLocationSubscription?.cancel();
     _driverCommuterSocketSubscription?.cancel();
     _markersController?.close();
+    _commuterDriverSocket.sink?.close();
   }
 }
