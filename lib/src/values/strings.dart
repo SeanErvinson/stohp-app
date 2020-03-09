@@ -71,4 +71,7 @@ class Strings {
       "Time to wake up. You're almost near!";
   static const String wakeConfirmation = "I'm awake!";
   static const String gender = "Gender";
+  static const String vehicleType = "Select vehicle type";
+  static const String route = "Enter route:";
+  static const String filter = "Filter";
 }
