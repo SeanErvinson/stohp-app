@@ -26,10 +26,7 @@ class OversightMapScreen extends StatelessWidget {
               top: 10,
               left: 10,
               child: FloatingActionButton.extended(
-                onPressed: () {
-                  _oversightBloc.add(DisconnectRoom());
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
                 foregroundColor: colorSecondary,
                 backgroundColor: Colors.white,
                 icon: Icon(
