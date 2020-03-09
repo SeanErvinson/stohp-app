@@ -112,8 +112,20 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
   }
 
   Stream<OversightState> _mapUpdateDriverPosition(
-      DriverOversightInfo driverPosition) async* {
-    _createUpdateMarker(driverPosition);
+      DriverOversightInfo driver) async* {
+    if (driver.vehicleType != _commuterOversightInfo.vehicleType &&
+        _commuterOversightInfo.vehicleType != null) {
+      _removeMarker(driver.id);
+      return;
+    }
+    if (_commuterOversightInfo.route != null &&
+        !driver.route
+            .toLowerCase()
+            .contains(_commuterOversightInfo.route.toLowerCase())) {
+      _removeMarker(driver.id);
+      return;
+    }
+    _createUpdateMarker(driver);
     _markersController.sink.add(markers);
   }
 
@@ -141,24 +153,11 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
   }
 
   Stream<OversightState> _mapDisconnectRoom() async* {
-    _sendDisconnectRequest();
     yield OversightInitial();
   }
 
   void _createUpdateMarker(DriverOversightInfo driverInfo) {
     final MarkerId _markerId = MarkerId(driverInfo.id.toString());
-    if (driverInfo.vehicleType != _commuterOversightInfo.vehicleType &&
-        _commuterOversightInfo.vehicleType != null) {
-      _removeMarker(driverInfo.id);
-      return;
-    }
-    if (_commuterOversightInfo.route != null &&
-        !driverInfo.route
-            .toLowerCase()
-            .contains(_commuterOversightInfo.route.toLowerCase())) {
-      _removeMarker(driverInfo.id);
-      return;
-    }
     markers.update(_markerId, (marker) {
       return marker.copyWith(
           iconParam: !driverInfo.isFull
@@ -189,15 +188,16 @@ class OversightBloc extends Bloc<OversightEvent, OversightState> {
 
   @override
   Future<void> close() {
+    _sendDisconnectRequest();
     _closeSockets();
     return super.close();
   }
 
-  void _closeSockets() {
-    _driverCommuterSocket.sink?.close();
-    _userLocationSubscription?.cancel();
-    _driverCommuterSocketSubscription?.cancel();
-    _markersController?.close();
-    _commuterDriverSocket.sink?.close();
+  Future<void> _closeSockets() async {
+    await _driverCommuterSocket.sink?.close();
+    await _userLocationSubscription?.cancel();
+    await _driverCommuterSocketSubscription?.cancel();
+    await _markersController?.close();
+    await _commuterDriverSocket.sink?.close();
   }
 }
