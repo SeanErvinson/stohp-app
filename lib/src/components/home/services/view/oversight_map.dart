@@ -63,6 +63,7 @@ class _OversightMapState extends State<OversightMap>
 
   @override
   void dispose() {
+    bloc.add(DisconnectRoom());
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
     bloc.close();
