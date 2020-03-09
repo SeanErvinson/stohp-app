@@ -11,8 +11,8 @@ class CommuterOversightInfo {
     id = json['id'];
     lat = json['lat'];
     lng = json['lng'];
-    lng = json['vehicle_type'];
-    lng = json['route'];
+    vehicleType = json['vehicle_type'];
+    route = json['route'];
   }
 
   Map<String, dynamic> toJson() {
